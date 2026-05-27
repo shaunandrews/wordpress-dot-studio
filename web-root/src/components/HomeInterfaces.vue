@@ -50,6 +50,7 @@ const interfaces = [
 }
 
 .interface-intro {
+  align-self: center;
   flex: 0 0 min(28rem, 32%);
 }
 
