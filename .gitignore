@@ -2,3 +2,4 @@ node_modules/
 web-root/dist/
 .superpowers/
 .DS_Store
+.vercel

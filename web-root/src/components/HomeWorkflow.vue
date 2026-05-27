@@ -6,26 +6,37 @@
 <script setup>
 import SectionIntro from './SectionIntro.vue';
 import InlineSvg from './InlineSvg.vue';
+import illustrationBuild from '../../assets/illustration-build.svg?url';
+import illustrationPlan from '../../assets/illustration-plan.svg?url';
+import illustrationPreview from '../../assets/illustration-preview.svg?url';
+import illustrationShip from '../../assets/illustration-ship.svg?url';
+
+const workflowIllustrations = {
+  build: illustrationBuild,
+  plan: illustrationPlan,
+  preview: illustrationPreview,
+  ship: illustrationShip,
+};
 
 const workflowSteps = [
   {
     key: 'plan',
-    title: 'Plan',
+    title: '1. Plan',
     body: 'Start from blueprints and map the site before code begins.',
   },
   {
     key: 'build',
-    title: 'Build',
+    title: '2. Build',
     body: 'Run WordPress locally with app tools, logs, and database access.',
   },
   {
     key: 'preview',
-    title: 'Preview',
+    title: '3. Preview',
     body: 'Share context and test changes against the real site surface.',
   },
   {
     key: 'ship',
-    title: 'Ship',
+    title: '4. Ship',
     body: 'Deploy with snapshots, status, and a clear record of changes.',
   },
 ];
@@ -43,10 +54,10 @@ const workflowSteps = [
       <article
         v-for="step in workflowSteps"
         :key="step.key"
-        class="workflow-card vstack debug"
+        class="workflow-card vstack gap-s"
       >
         <div class="workflow-card-illustration">
-          <InlineSvg :src="`/assets/illustration-${step.key}.svg`" />
+          <InlineSvg :src="workflowIllustrations[step.key]" />
         </div>
         <h3 class="type-heading type-l">{{ step.title }}</h3>
         <p class="type-body type-s">{{ step.body }}</p>

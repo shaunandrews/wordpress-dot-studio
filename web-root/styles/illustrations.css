@@ -17,3 +17,418 @@
 .inline-svg:not(.inline-svg-preserve-white) [fill="white" i] {
   fill: var(--color-chrome-fill);
 }
+
+.inline-svg .plan-orbit,
+.inline-svg .plan-line,
+.inline-svg .build-bubble,
+.inline-svg .build-dash,
+.inline-svg .preview-frame,
+.inline-svg .preview-hatch,
+.inline-svg .preview-surface,
+.inline-svg .preview-url,
+.inline-svg .preview-dot,
+.inline-svg .ship-grid,
+.inline-svg .ship-route,
+.inline-svg .ship-orbit,
+.inline-svg .ship-cursor {
+  transform-box: fill-box;
+}
+
+.inline-svg .plan-orbit,
+.inline-svg .ship-orbit {
+  transform-origin: center;
+}
+
+.inline-svg .plan-line {
+  transform-origin: left center;
+}
+
+.inline-svg .build-bubble {
+  transform-origin: left center;
+}
+
+.inline-svg .build-dash {
+  fill: currentColor;
+  transform-origin: center;
+}
+
+.inline-svg .preview-hatch {
+  fill-opacity: 0.18;
+}
+
+.inline-svg .ship-hatch {
+  opacity: 0.82;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .inline-svg .plan-orbit {
+    animation: plan-orbit 11s linear infinite;
+  }
+
+  .inline-svg .plan-line {
+    opacity: 0;
+    transform: scaleX(0.02);
+    animation: plan-write-line 5.6s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+
+  .inline-svg .plan-line-1 {
+    animation-delay: 0.12s;
+  }
+
+  .inline-svg .plan-line-2 {
+    animation-delay: 0.42s;
+  }
+
+  .inline-svg .plan-line-3 {
+    animation-delay: 0.72s;
+  }
+
+  .inline-svg .build-dash {
+    animation: build-dash 4.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+
+  .inline-svg .build-dash-2 {
+    animation-delay: 0.1s;
+  }
+
+  .inline-svg .build-dash-3 {
+    animation-delay: 0.2s;
+  }
+
+  .inline-svg .build-dash-4 {
+    animation-delay: 0.34s;
+  }
+
+  .inline-svg .build-dash-5 {
+    animation-delay: 0.48s;
+  }
+
+  .inline-svg .build-dash-6 {
+    animation-delay: 0.62s;
+  }
+
+  .inline-svg .build-dash-7 {
+    animation-delay: 0.76s;
+  }
+
+  .inline-svg .build-bubble {
+    opacity: 0;
+    transform: scaleX(0.2);
+    animation: build-type 4.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+
+  .inline-svg .build-bubble-2 {
+    animation-delay: 0.16s;
+  }
+
+  .inline-svg .build-bubble-3 {
+    animation-delay: 0.34s;
+  }
+
+  .inline-svg .build-bubble-4 {
+    animation-delay: 0.54s;
+  }
+
+  .inline-svg .build-bubble-5 {
+    animation-delay: 0.74s;
+  }
+
+  .inline-svg .preview-frame {
+    animation: preview-frame 7.2s ease-out infinite;
+  }
+
+  .inline-svg .preview-surface {
+    opacity: 0;
+    animation: preview-surface-load 7.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+
+  .inline-svg .preview-url {
+    fill: currentColor;
+    opacity: 0;
+    animation: preview-url-load 7.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+
+  .inline-svg .preview-hatch {
+    opacity: 0;
+    animation: preview-content-load 7.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+
+  .inline-svg .preview-dot {
+    opacity: 0;
+    animation: preview-dot-load 7.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+
+  .inline-svg .preview-dot-2 {
+    animation-delay: 0.12s;
+  }
+
+  .inline-svg .preview-dot-3 {
+    animation-delay: 0.24s;
+  }
+
+  .inline-svg .ship-grid {
+    animation: ship-grid 5.2s ease-in-out infinite;
+  }
+
+  .inline-svg .ship-route {
+    animation: ship-route 5.2s ease-out infinite;
+  }
+
+  .inline-svg .ship-orbit {
+    animation: ship-orbit 5.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+
+  .inline-svg .ship-cursor {
+    animation: ship-cursor 5.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+}
+
+@keyframes plan-orbit {
+  0%,
+  100% {
+    opacity: 0.42;
+    transform: rotate(0deg) scale(1);
+  }
+
+  45% {
+    opacity: 0.62;
+    transform: rotate(162deg) scale(1.045);
+  }
+
+  55% {
+    opacity: 0.58;
+    transform: rotate(198deg) scale(1.03);
+  }
+
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+@keyframes plan-write-line {
+  0%,
+  8% {
+    opacity: 0;
+    transform: scaleX(0.02);
+  }
+
+  18%,
+  78% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+
+  92%,
+  100% {
+    opacity: 0;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes build-dash {
+  0%,
+  100% {
+    fill: currentColor;
+    opacity: 0.42;
+    transform: scale(1);
+  }
+
+  12%,
+  30% {
+    fill: var(--color-theme-fill);
+    opacity: 0.86;
+    transform: scale(1.06);
+  }
+
+  46% {
+    fill: currentColor;
+    opacity: 0.5;
+    transform: scale(1);
+  }
+}
+
+@keyframes build-type {
+  0% {
+    opacity: 0;
+    transform: scaleX(0.18);
+  }
+
+  7%,
+  70% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+
+  86%,
+  100% {
+    opacity: 0;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes preview-frame {
+  0%,
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  18%,
+  84% {
+    opacity: 1;
+    transform: translateY(-1px);
+  }
+}
+
+@keyframes preview-surface-load {
+  0%,
+  12%,
+  100% {
+    opacity: 0;
+    transform: scaleY(0.98);
+  }
+
+  24%,
+  84% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+
+  94% {
+    opacity: 0;
+    transform: scaleY(1);
+  }
+}
+
+@keyframes preview-url-load {
+  0%,
+  10%,
+  100% {
+    fill: currentColor;
+    opacity: 0;
+    transform: translateX(-2px);
+  }
+
+  22% {
+    fill: currentColor;
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  38%,
+  58% {
+    fill: var(--color-theme-fill);
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  74%,
+  84% {
+    fill: currentColor;
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  94% {
+    fill: currentColor;
+    opacity: 0;
+    transform: translateX(0);
+  }
+}
+
+@keyframes preview-content-load {
+  0%,
+  28%,
+  100% {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+
+  42%,
+  84% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  94% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+}
+
+@keyframes preview-dot-load {
+  0%,
+  6%,
+  100% {
+    opacity: 0;
+    transform: scale(0.82);
+  }
+
+  16%,
+  84% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  94% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+@keyframes ship-grid {
+  0%,
+  100% {
+    opacity: 0.72;
+    transform: translateX(0);
+  }
+
+  48% {
+    opacity: 1;
+    transform: translateX(3px);
+  }
+}
+
+@keyframes ship-route {
+  0%,
+  100% {
+    opacity: 0.28;
+  }
+
+  32%,
+  58% {
+    opacity: 0.48;
+  }
+}
+
+@keyframes ship-orbit {
+  0%,
+  100% {
+    opacity: 0.94;
+    transform: rotate(0deg) scale(1);
+  }
+
+  52% {
+    opacity: 1;
+    transform: rotate(5deg) scale(1.02);
+  }
+}
+
+@keyframes ship-cursor {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  38% {
+    transform: translate(5px, -4px) scale(1);
+  }
+
+  48% {
+    transform: translate(5px, -4px) scale(0.94);
+  }
+
+  64% {
+    transform: translate(2px, -2px) scale(1);
+  }
+}

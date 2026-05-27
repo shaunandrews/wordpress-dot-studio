@@ -4,11 +4,12 @@
 @notes Publishes --site-header-height so downstream sections can offset fixed-header overlap.
 -->
 <script setup>
-import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { RouterLink, useRoute } from 'vue-router';
 import Button from './Button.vue';
 import InlineSvg from './InlineSvg.vue';
 import ProgressiveBlur from './ProgressiveBlur.vue';
+import studioIconUrl from '../../assets/studio-icon.svg?url';
 
 const navItems = [
   { label: 'Home', href: '/' },
@@ -22,6 +23,10 @@ const header = ref(null);
 const siteNav = ref(null);
 const isNavIndicatorReady = ref(false);
 const route = useRoute();
+const activeNavHref = computed(() => {
+  const activeItem = navItems.find((item) => item.href === route.path);
+  return activeItem?.href || '';
+});
 let headerObserver;
 let navObserver;
 let frameRequest;
@@ -39,9 +44,11 @@ function updateNavIndicator() {
 
   frameRequest = requestAnimationFrame(() => {
     const nav = siteNav.value;
-    const activeLink = nav?.querySelector('.nav-link-active');
+    const activeLink = Array.from(nav?.querySelectorAll('.nav-link') || []).find(
+      (link) => link.dataset.navHref === activeNavHref.value
+    );
 
-    if (!nav || !activeLink) {
+    if (!nav || !activeLink || !activeNavHref.value) {
       isNavIndicatorReady.value = false;
       return;
     }
@@ -57,7 +64,7 @@ function updateNavIndicator() {
 
 onMounted(() => {
   updateHeaderHeight();
-  updateNavIndicator();
+  nextTick(updateNavIndicator);
 
   if (header.value) {
     headerObserver = new ResizeObserver(updateHeaderHeight);
@@ -73,11 +80,12 @@ onMounted(() => {
 });
 
 watch(
-  () => route.fullPath,
+  activeNavHref,
   async () => {
     await nextTick();
     updateNavIndicator();
-  }
+  },
+  { flush: 'post', immediate: true }
 );
 
 onBeforeUnmount(() => {
@@ -100,7 +108,7 @@ onBeforeUnmount(() => {
     />
 
     <div class="site-header-start hstack gap-m align-center">
-      <InlineSvg src="/assets/studio-icon.svg" label="WordPress Studio Icon" preserve-white />
+      <InlineSvg :src="studioIconUrl" label="WordPress Studio Icon" preserve-white />
       <RouterLink class="brand type-heading type-m" to="/" aria-label="WordPress Studio home"
         >WordPress Studio</RouterLink
       >
@@ -118,6 +126,8 @@ onBeforeUnmount(() => {
           v-for="item in navItems"
           :key="item.href"
           class="nav-link"
+          :class="{ 'nav-link-active': item.href === activeNavHref }"
+          :data-nav-href="item.href"
           :to="item.href"
           exact-active-class="nav-link-active"
         >
@@ -165,7 +175,7 @@ onBeforeUnmount(() => {
   /* border-bottom: 1px solid rgba(0,0,0,0.15); */
   box-shadow:
     0 2px 0.5px rgba(255, 255, 255, 0.8) inset,
-    0 1px 3px rgba(0, 0, 0, 0.25);
+    0 1px 3px rgba(0, 0, 0, 0.15);
   padding: 4px;
   border-radius: 10px;
   position: relative;

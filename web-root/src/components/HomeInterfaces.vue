@@ -7,6 +7,8 @@
 import Button from './Button.vue';
 import FpoImage from './FpoImage.vue';
 import SectionIntro from './SectionIntro.vue';
+import screenshotStudioCode from '../../assets/screenshot-studio-code.png?url';
+import screenshotStudioMacos from '../../assets/screenshot-studio-macos.png?url';
 
 const interfaces = [
   {
@@ -14,12 +16,14 @@ const interfaces = [
     title: 'Studio Desktop',
     body: 'A local agentic environment for managing your WordPress sites and apps.',
     cta: 'About the apps',
+    image: screenshotStudioMacos,
   },
   {
     key: 'cli',
     title: 'Studio CLI',
     body: 'Perfect for automation and agentic workflows anywhere you can launch a terminal.',
     cta: 'Meet the CLI',
+    image: screenshotStudioCode,
   },
   {
     key: 'web',
@@ -43,8 +47,15 @@ const interfaces = [
     />
 
     <div class="interfaces-list hstack gap-xxl fill min-0">
-      <article v-for="item in interfaces" :key="item.key" class="interface-card vstack equal">
-        <FpoImage />
+      <article v-for="item in interfaces" :key="item.key" class="interface-card vstack gap-m equal">
+        <img
+          v-if="item.image"
+          class="interface-image"
+          :src="item.image"
+          :alt="`${item.title} interface screenshot`"
+          loading="lazy"
+        />
+        <FpoImage v-else />
         <h3 class="type-heading type-l">{{ item.title }}</h3>
         <p class="type-body type-s">{{ item.body }}</p>
         <Button class="interface-cta">{{ item.cta }}</Button>
@@ -54,8 +65,15 @@ const interfaces = [
 </template>
 
 <style scoped>
+.interface-image,
 .interface-card :deep(.fpo-image) {
+  display: block;
+  width: 100%;
   aspect-ratio: 16 / 10;
   min-height: 0;
+  border-radius: var(--space-m);
+  object-fit: cover;
+  object-position: top left;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 </style>
