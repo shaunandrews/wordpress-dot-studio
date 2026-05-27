@@ -1,14 +1,26 @@
 <script setup>
 import Button from './Button.vue';
+import DotGrid from './DotGrid.vue';
 </script>
 
 <template>
   <section class="home-studio-code px-l">
-    <div class="studio-code-blueprint">
-      <h2 class="type-heading type-xxl">Powered by Studio Code</h2>
-      <p class="type-body type-l">The Studio desktop app and web site are built upon Studio Code, an AI-powered WordPress agent that can write code, design themes, and more.</p>
-      <Button>Learn more</Button>
-    </div>
+    <DotGrid
+      as="div"
+      class="studio-code-blueprint"
+      :cross-size="3"
+      :cross-thickness="0.6"
+      :opacity="0.16"
+      :repulsion="0.12"
+      :ripple-strength="0.35"
+      :spacing="16"
+    >
+      <div class="studio-code-blueprint-content">
+        <h2 class="type-heading type-xxl">Powered by Studio Code</h2>
+        <p class="type-body type-l">The Studio desktop app and web site are built upon Studio Code, an AI-powered WordPress agent that can write code, design themes, and more.</p>
+        <Button>Learn more</Button>
+      </div>
+    </DotGrid>
   </section>
 </template>
 
@@ -25,18 +37,10 @@ import Button from './Button.vue';
   width: min(100%, var(--line-length-l));
   flex-direction: column;
   align-items: center;
-  padding: var(--space-xxl);
   border: 1px solid color-mix(in srgb, currentColor 26%, transparent);
   border-radius: 18px;
   overflow: hidden;
   text-align: center;
-  background:
-    linear-gradient(color-mix(in srgb, currentColor 10%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in srgb, currentColor 10%, transparent) 1px, transparent 1px),
-    linear-gradient(color-mix(in srgb, currentColor 5%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in srgb, currentColor 5%, transparent) 1px, transparent 1px);
-  background-position: center;
-  background-size: 64px 64px, 64px 64px, 16px 16px, 16px 16px;
 }
 
 .studio-code-blueprint::before,
@@ -64,17 +68,24 @@ import Button from './Button.vue';
   opacity: 0.28;
 }
 
-.studio-code-blueprint > * {
+.studio-code-blueprint-content {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-xxl);
+}
+
+.studio-code-blueprint-content > * {
   margin-bottom: 0;
 }
 
-.studio-code-blueprint > * + * {
+.studio-code-blueprint-content > * + * {
   margin-top: var(--space-l);
 }
 
 @media (max-width: 700px) {
-  .studio-code-blueprint {
+  .studio-code-blueprint-content {
     padding: var(--space-xl);
   }
 }
