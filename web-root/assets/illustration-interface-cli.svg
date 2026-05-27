@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="296" height="220" viewBox="0 0 296 220" fill="none" aria-hidden="true" focusable="false">
+  <rect x="29.5" y="34.5" width="237" height="151" rx="15.5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+  <path d="M30 72.5h236" stroke="currentColor" stroke-width="3"/>
+  <circle cx="50" cy="54" r="4" fill="currentColor" opacity=".28"/>
+  <circle cx="66" cy="54" r="4" fill="currentColor" opacity=".2"/>
+  <circle cx="82" cy="54" r="4" fill="currentColor" opacity=".14"/>
+
+  <rect x="49" y="93" width="198" height="73" rx="10" fill="currentColor" opacity=".04"/>
+  <text x="61" y="113" fill="currentColor" font-family="SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace" font-size="12" font-weight="600">$ studio create agency-site</text>
+  <text x="61" y="135" fill="currentColor" font-family="SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace" font-size="12" font-weight="600">$ studio preview --share</text>
+  <text x="61" y="155" fill="currentColor" font-family="SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace" font-size="10" opacity=".56">&gt; local WordPress ready</text>
+
+  <path d="M61 177h48" stroke="currentColor" stroke-linecap="round" stroke-width="4" opacity=".18"/>
+  <path d="M122 177h28" stroke="currentColor" stroke-linecap="round" stroke-width="4" opacity=".1"/>
+  <path d="M162 177h63" stroke="currentColor" stroke-linecap="round" stroke-width="4" opacity=".14"/>
+  <path d="M48 85h200" stroke="currentColor" stroke-dasharray="4 6" stroke-linecap="round" opacity=".12"/>
+</svg>

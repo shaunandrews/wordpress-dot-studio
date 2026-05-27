@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="296" height="220" viewBox="0 0 296 220" fill="none" aria-hidden="true" focusable="false">
+  <rect x="33.5" y="31.5" width="229" height="157" rx="17.5" fill="#fff" stroke="currentColor" stroke-width="3"/>
+  <path d="M34 70.5h228" stroke="currentColor" stroke-width="3"/>
+  <circle cx="53" cy="51" r="4" fill="currentColor" opacity=".22"/>
+  <circle cx="69" cy="51" r="4" fill="currentColor" opacity=".16"/>
+  <circle cx="85" cy="51" r="4" fill="currentColor" opacity=".12"/>
+
+  <rect x="52" y="91" width="75" height="56" rx="12" fill="currentColor" opacity=".04" stroke="currentColor" stroke-opacity=".22" stroke-width="2"/>
+  <text x="70" y="116" fill="currentColor" font-family="Inter, sans-serif" font-size="13" font-weight="600">Stage</text>
+  <path d="M68 132h42" stroke="currentColor" stroke-linecap="round" stroke-width="5" opacity=".14"/>
+
+  <rect x="169" y="91" width="75" height="56" rx="12" fill="currentColor" opacity=".04" stroke="currentColor" stroke-opacity=".22" stroke-width="2"/>
+  <text x="191" y="116" fill="currentColor" font-family="Inter, sans-serif" font-size="13" font-weight="600">Prod</text>
+  <path d="M185 132h42" stroke="currentColor" stroke-linecap="round" stroke-width="5" opacity=".14"/>
+
+  <path d="M137 119h20" stroke="currentColor" stroke-linecap="round" stroke-width="3"/>
+  <path d="m151 111 8 8-8 8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+
+  <rect x="79" y="160" width="138" height="28" rx="14" fill="currentColor" opacity=".05" stroke="currentColor" stroke-opacity=".16"/>
+  <path d="M99 174c0-4 3-7 7-7h7m-7 14h-7c-4 0-7-3-7-7s3-7 7-7" stroke="currentColor" stroke-linecap="round" stroke-width="2" opacity=".7"/>
+  <text x="124" y="178" fill="currentColor" font-family="Inter, sans-serif" font-size="12" font-weight="600">Share preview</text>
+
+  <circle cx="228" cy="165" r="8" fill="currentColor" opacity=".12"/>
+  <circle cx="242" cy="165" r="8" fill="currentColor" opacity=".18"/>
+  <path d="M219 181c4-5 16-5 20 0m10 0c-3-5-12-5-15-1" stroke="currentColor" stroke-linecap="round" stroke-width="2" opacity=".35"/>
+</svg>
