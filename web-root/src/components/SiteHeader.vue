@@ -87,9 +87,12 @@ onBeforeUnmount(() => {
 }
 
 .site-header-start,
-.site-header-center,
 .site-header-end {
   position: relative;
+  z-index: 1;
+}
+
+.site-header-center {
   z-index: 1;
 }
 
