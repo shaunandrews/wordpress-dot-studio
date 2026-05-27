@@ -4,6 +4,7 @@
 @props title - Heading text rendered as an h2.
 @props body - Supporting paragraph text rendered as a p.
 @props align - Text alignment for the intro block.
+@props verticalAlign - Cross-axis alignment within a parent flex/grid layout.
 @props maxWidth - Optional max-width style for the intro block.
 @props titleSize - Type size class applied to the heading.
 @props bodySize - Type size class applied to the paragraph.
@@ -25,6 +26,11 @@ const props = defineProps({
     default: 'center',
     validator: (value) => ['left', 'center', 'right'].includes(value),
   },
+  verticalAlign: {
+    type: String,
+    default: 'center',
+    validator: (value) => ['start', 'center', 'end', 'stretch'].includes(value),
+  },
   maxWidth: {
     type: String,
     default: 'var(--line-length-l)',
@@ -45,7 +51,7 @@ const rootStyle = computed(() => ({
 </script>
 
 <template>
-  <div class="section-intro" :class="`section-intro-${align}`" :style="rootStyle">
+  <div class="section-intro" :class="[`section-intro-${align}`, `section-intro-v-${verticalAlign}`]" :style="rootStyle">
     <h2 class="type-heading" :class="titleSize">{{ title }}</h2>
     <p class="type-body" :class="bodySize">{{ body }}</p>
   </div>
@@ -58,6 +64,22 @@ const rootStyle = computed(() => ({
   gap: var(--space-l);
   max-width: var(--section-intro-max-width);
   margin-inline: auto;
+}
+
+.section-intro-v-start {
+  align-self: flex-start;
+}
+
+.section-intro-v-center {
+  align-self: center;
+}
+
+.section-intro-v-end {
+  align-self: flex-end;
+}
+
+.section-intro-v-stretch {
+  align-self: stretch;
 }
 
 .section-intro-left {

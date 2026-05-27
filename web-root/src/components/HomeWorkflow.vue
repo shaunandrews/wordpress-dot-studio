@@ -37,6 +37,7 @@ const workflowSteps = [
     <SectionIntro
       title="Get in the flow with Studio"
       body="Focus on the output, and let Studio help you move between planning, building, previewing, and shipping with a fully integrated workflow."
+      verticalAlign="start"
     />
 
     <div class="home-workflow-process hstack justify-space-between px-xxl gap-xxl">

@@ -34,7 +34,8 @@ const interfaces = [
   <section class="home-interfaces hstack gap-xxl align-start px-xl pl-xxl">
     <SectionIntro
       class="interface-intro"
-      align="center"
+      align="left"
+      verticalAlign="center"
       maxWidth="min(28rem, 32%)"
       title="Three tools. One Studio."
       body="Use the tool that fits the work: a desktop workspace, an automation-ready CLI, and a web dashboard for teams and remote state."
@@ -56,23 +57,6 @@ const interfaces = [
 </template>
 
 <style scoped>
-.home-interfaces {
-  width: 100%;
-}
-
-.interface-intro {
-  align-self: center;
-  flex: 0 0 min(28rem, 32%);
-}
-
-.interface-intro > * {
-  margin-bottom: 0;
-}
-
-.interface-intro > * + * {
-  margin-top: var(--space-l);
-}
-
 .interface-desk {
   flex: 1 1 auto;
   align-items: stretch;
