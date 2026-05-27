@@ -1,3 +1,8 @@
+<!--
+@component HomeDownload
+@description Renders the landing page download and signup options for desktop apps, CLI, and web access.
+@notes Download card data lives locally because this section is static marketing content.
+-->
 <script setup>
 import Button from './Button.vue';
 

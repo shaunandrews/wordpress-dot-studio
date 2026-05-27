@@ -1,3 +1,11 @@
+<!--
+@component Button
+@description Renders the shared call-to-action control as a native button or anchor.
+@props href - Optional URL that switches the root element to an anchor.
+@props type - Native button type used when no href is provided.
+@props variant - Visual style, either default or primary.
+@slots default - Button label or inline content.
+-->
 <script setup>
 import { computed, useAttrs } from 'vue';
 

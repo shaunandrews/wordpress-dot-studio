@@ -1,3 +1,8 @@
+<!--
+@component App
+@description Composes the WordPress Studio landing page shell, primary sections, footer, and dev-only Agentation overlay.
+@notes Keeps page ordering centralized so section components can stay focused on their own content and layout.
+-->
 <script setup>
 import { defineAsyncComponent } from 'vue';
 import HomeDownload from './components/HomeDownload.vue';

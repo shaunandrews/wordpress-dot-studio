@@ -1,3 +1,15 @@
+<!--
+@component DotGrid
+@description Provides an interactive canvas dot-grid backdrop while rendering semantic wrapper content through the as prop.
+@props as - Root element tag to render.
+@props opacity - Canvas opacity for the grid marks.
+@props repulsion - Pointer repulsion strength for nearby grid points.
+@props rippleStrength - Click ripple force applied across the grid.
+@props spacing - Distance between grid points in CSS pixels.
+@props crossSize - Half-size of each grid cross mark.
+@props crossThickness - Stroke thickness for grid marks.
+@slots default - Foreground content layered above the canvas.
+-->
 <script setup>
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 

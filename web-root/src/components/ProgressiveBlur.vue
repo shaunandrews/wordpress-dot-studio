@@ -1,3 +1,12 @@
+<!--
+@component ProgressiveBlur
+@description Creates a directional progressive backdrop blur with layered masked blur bands and a tint wash.
+@props direction - Edge where the blur is anchored: top, right, bottom, or left.
+@props strength - Maximum blur radius in pixels.
+@props layers - Number of masked blur layers to stack.
+@props extent - Multiplier for how far the blur field extends from its edge.
+@props tint - CSS color used for the progressive tint overlay.
+-->
 <script setup>
 import { computed } from 'vue';
 

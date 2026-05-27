@@ -1,3 +1,8 @@
+<!--
+@component FpoImage
+@description Displays a reusable FPO placeholder for unfinished media or illustration slots.
+@notes Marked aria-hidden because it communicates layout intent rather than page content.
+-->
 <template>
   <figure class="fpo-image" aria-hidden="true">
     <p class="type-caption type-s">FPO</p>

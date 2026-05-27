@@ -1,3 +1,8 @@
+<!--
+@component AgentationOverlay
+@description Mounts the Agentation feedback overlay in development without adding it to production bundles.
+@notes Uses dynamic imports so React and Agentation are loaded only when the dev overlay is active.
+-->
 <script setup>
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 

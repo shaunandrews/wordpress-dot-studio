@@ -1,3 +1,8 @@
+<!--
+@component SectionIntro
+@description Centers section heading and body copy with a shared max line length.
+@slots default - Heading, body copy, and any supporting intro content.
+-->
 <template>
   <div class="section-intro">
     <slot />

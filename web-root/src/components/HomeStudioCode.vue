@@ -1,3 +1,8 @@
+<!--
+@component HomeStudioCode
+@description Highlights the Studio Code foundation inside a centered blueprint-style DotGrid panel.
+@notes Reuses DotGrid so blueprint texture behavior stays consistent with the hero surface.
+-->
 <script setup>
 import Button from './Button.vue';
 import DotGrid from './DotGrid.vue';

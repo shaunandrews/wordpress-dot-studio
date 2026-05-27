@@ -1,3 +1,8 @@
+<!--
+@component SiteHeader
+@description Renders the fixed global header with brand, primary navigation, actions, and progressive blur backing.
+@notes Publishes --site-header-height so downstream sections can offset fixed-header overlap.
+-->
 <script setup>
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 import Button from './Button.vue';
@@ -5,7 +10,7 @@ import InlineSvg from './InlineSvg.vue';
 import ProgressiveBlur from './ProgressiveBlur.vue';
 
 const navItems = [
-  { label: 'App', href: '/app' },
+  { label: 'Desktop', href: '/app' },
   { label: 'CLI', href: '/cli' },
   { label: 'Web', href: '/web' },
   { label: 'Docs', href: '/docs' },

@@ -1,3 +1,8 @@
+<!--
+@component HomeInterfaces
+@description Presents the three Studio surfaces: desktop app, CLI, and web dashboard.
+@notes Uses FPO placeholders until final interface visuals are ready.
+-->
 <script setup>
 import Button from './Button.vue';
 import FpoImage from './FpoImage.vue';
@@ -25,7 +30,7 @@ const interfaces = [
 </script>
 
 <template>
-  <section class="home-interfaces hstack gap-xxl align-start px-l">
+  <section class="home-interfaces hstack gap-xxl align-start px-xl pl-xxl">
     <div class="interface-intro">
       <h2 class="type-heading type-xxl">Three tools. One Studio.</h2>
       <p class="type-body type-l">Use the tool that fits the work: a desktop workspace, an automation-ready CLI, and a web dashboard for teams and remote state.</p>
