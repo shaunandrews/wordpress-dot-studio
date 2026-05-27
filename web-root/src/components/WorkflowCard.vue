@@ -18,7 +18,7 @@ defineProps({
   <article class="workflow-card vstack">
     <InlineSvg :src="`/assets/illustration-${step.key}.svg`" />
     <div>
-      <h3 class="type-heading" :class="step.headingSize ?? 'type-xl'">{{ step.title }}</h3>
+      <h3 class="type-heading" :class="step.headingSize ?? 'type-l'">{{ step.title }}</h3>
       <p class="type-body type-s">{{ step.body }}</p>
     </div>
   </article>
@@ -27,9 +27,5 @@ defineProps({
 <style scoped>
 .workflow-card {
   text-align: center;
-}
-
-.workflow-card > * {
-  margin: 0;
 }
 </style>
