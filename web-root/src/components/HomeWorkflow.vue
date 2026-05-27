@@ -12,7 +12,6 @@ const workflowSteps = [
     key: 'plan',
     title: 'Plan',
     body: 'Start from blueprints and map the site before code begins.',
-    headingSize: 'type-l',
   },
   {
     key: 'build',
@@ -48,7 +47,7 @@ const workflowSteps = [
       >
         <InlineSvg :src="`/assets/illustration-${step.key}.svg`" />
         <div>
-          <h3 class="type-heading" :class="step.headingSize ?? 'type-l'">{{ step.title }}</h3>
+          <h3 class="type-heading type-l">{{ step.title }}</h3>
           <p class="type-body type-s">{{ step.body }}</p>
         </div>
       </article>
