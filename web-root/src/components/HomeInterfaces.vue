@@ -6,6 +6,7 @@
 <script setup>
 import Button from './Button.vue';
 import FpoImage from './FpoImage.vue';
+import SectionIntro from './SectionIntro.vue';
 
 const interfaces = [
   {
@@ -31,14 +32,19 @@ const interfaces = [
 
 <template>
   <section class="home-interfaces hstack gap-xxl align-start px-xl pl-xxl">
-    <div class="interface-intro">
-      <h2 class="type-heading type-xxl">Three tools. One Studio.</h2>
-      <p class="type-body type-l">Use the tool that fits the work: a desktop workspace, an automation-ready CLI, and a web dashboard for teams and remote state.</p>
-    </div>
+    <SectionIntro
+      class="interface-intro"
+      align="center"
+      maxWidth="min(28rem, 32%)"
+      title="Three tools. One Studio."
+      body="Use the tool that fits the work: a desktop workspace, an automation-ready CLI, and a web dashboard for teams and remote state."
+      titleSize="type-xxl"
+      bodySize="type-l"
+    />
 
     <div class="interface-desk hstack">
       <article v-for="item in interfaces" :key="item.key" class="interface-card">
-        <FpoImage class="interface-fpo" />
+        <FpoImage class="interface-fpo" :shadow="false" />
         <div class="interface-copy">
           <h3 class="type-heading type-xl">{{ item.title }}</h3>
           <p class="type-body type-m">{{ item.body }}</p>

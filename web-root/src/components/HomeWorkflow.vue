@@ -34,10 +34,10 @@ const workflowSteps = [
 
 <template>
   <section class="home-workflow p-xxl w-full vstack gap-xxl">
-    <SectionIntro>
-      <h2 class="type-heading type-xxl">Get in the flow with Studio</h2>
-      <p class="type-body type-l">Focus on the output, and let Studio help you move between planning, building, previewing, and shipping with a fully integrated workflow.</p>
-    </SectionIntro>
+    <SectionIntro
+      title="Get in the flow with Studio"
+      body="Focus on the output, and let Studio help you move between planning, building, previewing, and shipping with a fully integrated workflow."
+    />
 
     <div class="home-workflow-process hstack justify-space-between px-xxl gap-xxl">
       <WorkflowCard
