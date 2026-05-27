@@ -26,12 +26,12 @@ import FpoImage from './FpoImage.vue';
 <style scoped>
 .home-hero {
   padding-top: calc(var(--site-header-height, 0px) + var(--space-l));
-  min-height: 60dvh;
+  min-height: 80dvh;
   border-bottom: 1px solid var(--color-chrome-border);
 }
 
 .home-hero-message {
-  max-width: 740px;
+  max-width: 480px;
 }
 
 .home-hero-media {

@@ -1,5 +1,6 @@
 .inline-svg {
   display: block;
+  color: var(--color-chrome-fg);
 }
 
 .inline-svg svg {

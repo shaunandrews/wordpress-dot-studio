@@ -33,7 +33,6 @@ const interfaces = [
 <template>
   <section class="home-interfaces hstack gap-xxl align-start px-xl pl-xxl">
     <SectionIntro
-      class="interface-intro"
       align="left"
       verticalAlign="center"
       maxWidth="min(28rem, 32%)"
@@ -43,13 +42,11 @@ const interfaces = [
       bodySize="type-l"
     />
 
-    <div class="interface-desk hstack">
-      <article v-for="item in interfaces" :key="item.key" class="interface-card">
-        <FpoImage class="interface-fpo" :shadow="false" />
-        <div class="interface-copy">
-          <h3 class="type-heading type-xl">{{ item.title }}</h3>
-          <p class="type-body type-m">{{ item.body }}</p>
-        </div>
+    <div class="interfaces-list hstack gap-xxl fill min-0">
+      <article v-for="item in interfaces" :key="item.key" class="interface-card vstack equal">
+        <FpoImage />
+        <h3 class="type-heading type-xl">{{ item.title }}</h3>
+        <p class="type-body type-m">{{ item.body }}</p>
         <Button class="interface-cta">{{ item.cta }}</Button>
       </article>
     </div>
@@ -57,51 +54,21 @@ const interfaces = [
 </template>
 
 <style scoped>
-.interface-desk {
-  flex: 1 1 auto;
-  align-items: stretch;
-  min-width: 0;
-}
-
 .interface-card {
-  display: flex;
-  flex: 1 1 0;
-  min-width: 0;
-  flex-direction: column;
   gap: var(--space-l);
-  padding: var(--space-xl);
-  border: 1px solid var(--color-chrome-border);
-  border-radius: 18px;
 }
 
-.interface-fpo {
-  width: 100%;
-  min-height: 12rem;
+.interface-card :deep(.fpo-image) {
+  aspect-ratio: 16 / 10;
+  min-height: 0;
 }
 
-.interface-copy {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-m);
-}
-
-.interface-copy > * {
+.interface-card h3,
+.interface-card p {
   margin: 0;
 }
 
 .interface-cta {
-  align-self: flex-start;
-  margin-top: auto;
-}
-
-@media (max-width: 900px) {
-  .home-interfaces,
-  .interface-desk {
-    flex-direction: column;
-  }
-
-  .interface-intro {
-    flex-basis: auto;
-  }
+  align-self: center;
 }
 </style>

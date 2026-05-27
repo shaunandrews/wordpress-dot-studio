@@ -32,20 +32,22 @@ const workflowSteps = [
 </script>
 
 <template>
-  <section class="home-workflow p-xxl w-full vstack gap-xxl">
+  <section class="home-workflow p-xxl w-full vstack">
     <SectionIntro
       title="Get in the flow with Studio"
       body="Focus on the output, and let Studio help you move between planning, building, previewing, and shipping with a fully integrated workflow."
       verticalAlign="start"
     />
 
-    <div class="home-workflow-process hstack justify-space-between px-xxl gap-xxl">
+    <div class="home-workflow-process hstack gap-xxl">
       <article
         v-for="step in workflowSteps"
         :key="step.key"
         class="workflow-card vstack"
       >
-        <InlineSvg :src="`/assets/illustration-${step.key}.svg`" />
+        <div class="workflow-card-illustration">
+          <InlineSvg :src="`/assets/illustration-${step.key}.svg`" />
+        </div>
         <div>
           <h3 class="type-heading type-l">{{ step.title }}</h3>
           <p class="type-body type-s">{{ step.body }}</p>
@@ -56,8 +58,19 @@ const workflowSteps = [
 </template>
 
 <style scoped>
+.home-workflow {
+  max-width: 1200px;
+  margin: auto;
+}
 .workflow-card {
+  flex: 1 1 0;
+  min-width: 0;
   text-align: center;
+}
+
+.workflow-card-illustration {
+  display: flex;
+  justify-content: center;
 }
 
 .workflow-card p {

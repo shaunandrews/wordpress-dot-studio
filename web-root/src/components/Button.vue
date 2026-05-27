@@ -56,21 +56,35 @@ const buttonAttrs = computed(() => {
   align-items: center;
   justify-content: center;
   gap: var(--space-s);
-  min-height: 2.25rem;
+  height: 40px;
   padding: var(--space-m) var(--space-l);
-  border: 1px solid var(--color-chrome-border);
-  border-radius: 4px;
-  color: inherit;
+  border: 1px dashed var(--color-chrome-border);
+  border-radius: 6px;
+  color: var(--color-chrome-fg-muted);
   background: var(--color-chrome-fill);
   font: inherit;
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-medium);
   line-height: var(--line-height-snug);
   text-decoration: none;
   cursor: pointer;
+  transition: all 0.05s linear;
+}
+
+.button:hover {
+  border-color: var(--color-theme-fill);
+  color: var(--color-theme-fill);
 }
 
 .button-primary {
-  border-color: var(--color-chrome-fg);
-  color: var(--color-chrome-fill);
-  background: var(--color-chrome-fg);
+  border: 1px solid var(--color-theme-fill);
+  color: var(--color-theme-fg);
+  background: var(--color-theme-fill);
+}
+
+.button-primary:hover {
+  border-color: var(--color-theme-fill-accent);
+  color: var(--color-theme-fg);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 </style>

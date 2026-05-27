@@ -77,7 +77,6 @@ onBeforeUnmount(() => {
 <style scoped>
 .site-header {
   --site-header-blur-tint: rgb(255 255 255 / 0.16);
-
   position: fixed;
   top: 0;
   left: 0;
@@ -87,8 +86,10 @@ onBeforeUnmount(() => {
 
 .site-header-center {
   position: absolute;
+  top: var(--space-l);
   left: 50%;
   transform: translateX(-50%);
+  z-index: 1;
 }
 
 .site-header-start,
@@ -97,9 +98,14 @@ onBeforeUnmount(() => {
   z-index: 1;
 }
 
-.site-header-center {
-  z-index: 1;
+.site-nav a {
+  color: var(--color-chrome-fg-muted);
+
+  &:hover {
+    color: var(--color-theme-fill);
+  }
 }
+
 
 @media (prefers-color-scheme: dark) {
   .site-header {

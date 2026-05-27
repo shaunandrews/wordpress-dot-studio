@@ -29,10 +29,16 @@ const AgentationOverlay = import.meta.env.DEV
       <HomeDownload />
     </main>
 
-    <footer class="site-footer">
-      <p class="type-caption type-s">An Automattic product</p>
+    <footer class="site-footer p-l">
+      <p>An Automattic product</p>
     </footer>
 
     <component :is="AgentationOverlay" v-if="AgentationOverlay" />
   </div>
 </template>
+
+<style scoped>
+.site-footer {
+  text-align: center;
+}
+</style>
