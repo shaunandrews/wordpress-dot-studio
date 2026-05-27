@@ -28,4 +28,8 @@ defineProps({
 .workflow-card {
   text-align: center;
 }
+
+.workflow-card p {
+  color: var(--color-chrome-fg-muted);
+}
 </style>
