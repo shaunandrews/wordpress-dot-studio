@@ -36,7 +36,7 @@ const interfaces = [
       <p class="type-body type-l">Use the tool that fits the work: a desktop workspace, an automation-ready CLI, and a web dashboard for teams and remote state.</p>
     </div>
 
-    <div class="interface-desk hstack gap-xl">
+    <div class="interface-desk hstack">
       <article v-for="item in interfaces" :key="item.key" class="interface-card">
         <FpoImage class="interface-fpo" />
         <div class="interface-copy">
