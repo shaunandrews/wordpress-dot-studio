@@ -1,10 +1,9 @@
 <!--
 @component HomeWorkflow
 @description Renders the Studio workflow section, from planning through shipping.
-@notes Supplies static workflow step data to a local subcomponent for consistent card rendering.
+@notes Renders workflow cards directly in the template so the section stays self-contained.
 -->
 <script setup>
-import { defineComponent, h } from 'vue';
 import SectionIntro from './SectionIntro.vue';
 import InlineSvg from './InlineSvg.vue';
 
@@ -31,29 +30,6 @@ const workflowSteps = [
     body: 'Deploy with snapshots, status, and a clear record of changes.',
   },
 ];
-
-const WorkflowCard = defineComponent({
-  name: 'WorkflowCard',
-  props: {
-    step: {
-      type: Object,
-      required: true,
-    },
-  },
-  setup(props) {
-    return () => h(
-      'article',
-      { class: 'workflow-card vstack' },
-      [
-        h(InlineSvg, { src: `/assets/illustration-${props.step.key}.svg` }),
-        h('div', null, [
-          h('h3', { class: ['type-heading', props.step.headingSize ?? 'type-l'] }, props.step.title),
-          h('p', { class: ['type-body', 'type-s'] }, props.step.body),
-        ]),
-      ],
-    );
-  },
-});
 </script>
 
 <template>
@@ -65,11 +41,17 @@ const WorkflowCard = defineComponent({
     />
 
     <div class="home-workflow-process hstack justify-space-between px-xxl gap-xxl">
-      <WorkflowCard
+      <article
         v-for="step in workflowSteps"
         :key="step.key"
-        :step="step"
-      />
+        class="workflow-card vstack"
+      >
+        <InlineSvg :src="`/assets/illustration-${step.key}.svg`" />
+        <div>
+          <h3 class="type-heading" :class="step.headingSize ?? 'type-l'">{{ step.title }}</h3>
+          <p class="type-body type-s">{{ step.body }}</p>
+        </div>
+      </article>
     </div>
   </section>
 </template>
