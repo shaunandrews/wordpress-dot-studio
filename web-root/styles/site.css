@@ -3,6 +3,29 @@
 @import url('./_type.css');
 @import url('./_utilities.css');
 @import url('./illustrations.css');
-@import url('./dot-grid.css');
-@import url('./home-hero.css');
-@import url('./home-workflow.css');
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+body {
+  overflow: hidden;
+}
+
+.wp-studio {
+  height: 100dvh;
+  overflow: hidden;
+}
+
+main {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+main > section,
+.site-footer {
+  flex: 0 0 auto;
+}

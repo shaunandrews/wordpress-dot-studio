@@ -16,3 +16,17 @@ defineProps({
     <p class="type-body type-s">{{ step.body }}</p>
   </article>
 </template>
+
+<style scoped>
+.workflow-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-l);
+  text-align: center;
+}
+
+.workflow-card > * {
+  margin: 0;
+}
+</style>

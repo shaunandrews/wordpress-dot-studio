@@ -2,15 +2,7 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 
 export default defineConfig({
-  plugins: [
-    vue({
-      template: {
-        compilerOptions: {
-          isCustomElement: (tag) => tag === 'dot-grid',
-        },
-      },
-    }),
-  ],
+  plugins: [vue()],
   root: 'web-root',
   server: {
     host: '127.0.0.1',

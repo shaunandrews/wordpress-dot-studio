@@ -11,8 +11,8 @@
 /* Illustration "paper" follows the chrome surface so it inverts in dark mode,
  * while the "ink" (currentColor) follows the text color. SVGO emits white as
  * #fff; the extra forms guard against it being emitted differently. */
-.inline-svg [fill="#fff"],
-.inline-svg [fill="#ffffff"],
-.inline-svg [fill="white" i] {
+.inline-svg:not(.inline-svg-preserve-white) [fill="#fff"],
+.inline-svg:not(.inline-svg-preserve-white) [fill="#ffffff"],
+.inline-svg:not(.inline-svg-preserve-white) [fill="white" i] {
   fill: var(--color-chrome-fill);
 }

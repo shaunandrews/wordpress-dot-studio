@@ -10,6 +10,10 @@ const props = defineProps({
     type: String,
     default: '',
   },
+  preserveWhite: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const markup = ref('');
@@ -29,6 +33,7 @@ watchEffect(async () => {
 <template>
   <span
     class="inline-svg"
+    :class="{ 'inline-svg-preserve-white': preserveWhite }"
     :role="label ? 'img' : undefined"
     :aria-label="label || undefined"
     :aria-hidden="label ? undefined : 'true'"
