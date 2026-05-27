@@ -1,11 +1,12 @@
 <!--
 @component HomeWorkflow
 @description Renders the Studio workflow section, from planning through shipping.
-@notes Supplies static workflow step data to WorkflowCard for consistent card rendering.
+@notes Supplies static workflow step data to a local subcomponent for consistent card rendering.
 -->
 <script setup>
+import { defineComponent, h } from 'vue';
 import SectionIntro from './SectionIntro.vue';
-import WorkflowCard from './WorkflowCard.vue';
+import InlineSvg from './InlineSvg.vue';
 
 const workflowSteps = [
   {
@@ -30,6 +31,29 @@ const workflowSteps = [
     body: 'Deploy with snapshots, status, and a clear record of changes.',
   },
 ];
+
+const WorkflowCard = defineComponent({
+  name: 'WorkflowCard',
+  props: {
+    step: {
+      type: Object,
+      required: true,
+    },
+  },
+  setup(props) {
+    return () => h(
+      'article',
+      { class: 'workflow-card vstack' },
+      [
+        h(InlineSvg, { src: `/assets/illustration-${props.step.key}.svg` }),
+        h('div', null, [
+          h('h3', { class: ['type-heading', props.step.headingSize ?? 'type-l'] }, props.step.title),
+          h('p', { class: ['type-body', 'type-s'] }, props.step.body),
+        ]),
+      ],
+    );
+  },
+});
 </script>
 
 <template>
@@ -51,11 +75,11 @@ const workflowSteps = [
 </template>
 
 <style scoped>
-.home-workflow-process {
-  /* border: 1px solid var(--color-chrome-border); */
+.workflow-card {
+  text-align: center;
 }
 
-.home-workflow-process :deep(.inline-svg svg) {
-  max-width: 240px;
+.workflow-card p {
+  color: var(--color-chrome-fg-muted);
 }
 </style>
