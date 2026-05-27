@@ -68,7 +68,7 @@ const buttonAttrs = computed(() => {
   line-height: var(--line-height-snug);
   text-decoration: none;
   cursor: pointer;
-  transition: all 0.05s linear;
+  transition: all 0.075s linear;
 }
 
 .button:hover {
@@ -80,11 +80,14 @@ const buttonAttrs = computed(() => {
   border: 1px solid var(--color-theme-fill);
   color: var(--color-theme-fg);
   background: var(--color-theme-fill);
+  box-shadow: inset 0 1px 0.5px var(--color-theme-fill-highlight);
 }
 
 .button-primary:hover {
   border-color: var(--color-theme-fill-accent);
   color: var(--color-theme-fg);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3),
+              inset 0 1px 1px var(--color-theme-fill-highlight);
+  transform: rotate(-1deg);
 }
 </style>

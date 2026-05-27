@@ -45,8 +45,8 @@ const interfaces = [
     <div class="interfaces-list hstack gap-xxl fill min-0">
       <article v-for="item in interfaces" :key="item.key" class="interface-card vstack equal">
         <FpoImage />
-        <h3 class="type-heading type-xl">{{ item.title }}</h3>
-        <p class="type-body type-m">{{ item.body }}</p>
+        <h3 class="type-heading type-l">{{ item.title }}</h3>
+        <p class="type-body type-s">{{ item.body }}</p>
         <Button class="interface-cta">{{ item.cta }}</Button>
       </article>
     </div>
@@ -54,21 +54,8 @@ const interfaces = [
 </template>
 
 <style scoped>
-.interface-card {
-  gap: var(--space-l);
-}
-
 .interface-card :deep(.fpo-image) {
   aspect-ratio: 16 / 10;
   min-height: 0;
-}
-
-.interface-card h3,
-.interface-card p {
-  margin: 0;
-}
-
-.interface-cta {
-  align-self: center;
 }
 </style>

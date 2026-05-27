@@ -5,6 +5,7 @@
   --color-chrome-border: #ddd;
   --color-theme-fill: #1038be;
   --color-theme-fill-accent: #0a2a8c;
+  --color-theme-fill-highlight: rgb(108, 137, 224);
   --color-theme-fg: #fff;
 
   --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;

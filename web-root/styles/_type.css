@@ -14,7 +14,6 @@ body {
 .type-heading,
 .type-body,
 .type-caption {
-  margin: 0 0 var(--space-l);
   max-width: var(--line-length-m);
 }
 
@@ -45,7 +44,6 @@ body {
   font-family: var(--font-body);
   font-size: var(--font-size-s);
   line-height: var(--line-height-relaxed);
-  color: var(--color-chrome-fg-muted);
 }
 
 .type-label {

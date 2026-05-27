@@ -1,15 +1,11 @@
 <!--
 @component App
-@description Composes the WordPress Studio landing page shell, primary sections, footer, and dev-only Agentation overlay.
-@notes Keeps page ordering centralized so section components can stay focused on their own content and layout.
+@description Composes the WordPress Studio shared page shell, route outlet, footer, and dev-only Agentation overlay.
+@notes Keeps global layout centralized so routed pages can stay focused on page content.
 -->
 <script setup>
 import { defineAsyncComponent } from 'vue';
-import HomeDownload from './components/HomeDownload.vue';
-import HomeHero from './components/HomeHero.vue';
-import HomeInterfaces from './components/HomeInterfaces.vue';
-import HomeStudioCode from './components/HomeStudioCode.vue';
-import HomeWorkflow from './components/HomeWorkflow.vue';
+import { RouterView } from 'vue-router';
 import SiteHeader from './components/SiteHeader.vue';
 
 const AgentationOverlay = import.meta.env.DEV
@@ -18,16 +14,10 @@ const AgentationOverlay = import.meta.env.DEV
 </script>
 
 <template>
-  <div class="wp-studio page-home vstack">
+  <div class="wp-studio vstack">
     <SiteHeader />
 
-    <main id="main" class="vstack gap-xl">
-      <HomeHero />
-      <HomeWorkflow />
-      <HomeInterfaces />
-      <HomeStudioCode />
-      <HomeDownload />
-    </main>
+    <RouterView />
 
     <footer class="site-footer p-l">
       <p>An Automattic product</p>
