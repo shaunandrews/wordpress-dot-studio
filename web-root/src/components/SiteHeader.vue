@@ -45,7 +45,7 @@ onBeforeUnmount(() => {
       direction="top"
       :strength="8"
       :layers="8"
-      :extent="1"
+      :extent="0.75"
       tint="var(--site-header-blur-tint)"
     />
 

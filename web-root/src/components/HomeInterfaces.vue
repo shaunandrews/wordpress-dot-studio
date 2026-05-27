@@ -10,7 +10,7 @@ import FpoImage from './FpoImage.vue';
 const interfaces = [
   {
     key: 'app',
-    title: 'Studio App',
+    title: 'Studio Desktop',
     body: 'A local agentic environment for managing your WordPress sites and apps.',
     cta: 'About the apps',
   },
