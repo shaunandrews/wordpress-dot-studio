@@ -1,0 +1,255 @@
+/* Type
+ * Semantic text roles with reusable size modifiers.
+ */
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--font-size-m);
+  line-height: var(--line-height-normal);
+  letter-spacing: 0;
+  text-rendering: optimizeLegibility;
+}
+
+.type-display,
+.type-heading,
+.type-body,
+.type-caption {
+  margin: 0 0 var(--space-l);
+  max-width: var(--line-length-m);
+}
+
+.type-display,
+.type-heading {
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+
+.type-display {
+  font-size: var(--font-size-xxxxl);
+}
+
+.type-heading {
+  font-size: var(--font-size-xxl);
+}
+
+.type-body {
+  font-family: var(--font-body);
+  font-size: var(--font-size-m);
+  line-height: var(--line-height-relaxed);
+}
+
+.type-caption {
+  font-family: var(--font-body);
+  font-size: var(--font-size-s);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-chrome-fg-muted);
+}
+
+.type-label {
+  font-family: var(--font-body);
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-snug);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.type-display:last-child,
+.type-heading:last-child,
+.type-body:last-child,
+.type-caption:last-child,
+.type-label:last-child {
+  margin-bottom: 0;
+}
+
+.type-list {
+  margin: 0 0 var(--space-l);
+  padding-left: 1.25em;
+}
+
+.type-list:last-child {
+  margin-bottom: 0;
+}
+
+.type-list-item + .type-list-item {
+  margin-top: var(--space-s);
+}
+
+.type-xs {
+  font-size: var(--font-size-xs);
+}
+
+.type-s {
+  font-size: var(--font-size-s);
+}
+
+.type-m {
+  font-size: var(--font-size-m);
+}
+
+.type-l {
+  font-size: var(--font-size-l);
+}
+
+.type-xl {
+  font-size: var(--font-size-xl);
+}
+
+.type-xxl {
+  font-size: var(--font-size-xxl);
+}
+
+.type-xxxl {
+  font-size: var(--font-size-xxxl);
+}
+
+.type-xxxxl {
+  font-size: var(--font-size-xxxxl);
+}
+
+strong,
+b {
+  font-weight: var(--font-weight-bold);
+}
+
+em,
+i {
+  font-style: italic;
+}
+
+small {
+  font-size: var(--font-size-s);
+  line-height: var(--line-height-relaxed);
+}
+
+address {
+  font-style: normal;
+  line-height: var(--line-height-relaxed);
+}
+
+cite {
+  font-style: italic;
+}
+
+q {
+  quotes: "“" "”" "‘" "’";
+}
+
+q::before {
+  content: open-quote;
+}
+
+q::after {
+  content: close-quote;
+}
+
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--font-mono);
+}
+
+code,
+kbd,
+samp {
+  font-size: 0.95em;
+}
+
+code {
+  padding: 0.12em 0.35em;
+  border: 1px solid var(--color-chrome-border);
+  border-radius: 0.35rem;
+  background: var(--color-chrome-fill);
+}
+
+kbd {
+  padding: 0.12em 0.4em;
+  border: 1px solid var(--color-chrome-border);
+  border-bottom-width: 2px;
+  border-radius: 0.35rem;
+  background: var(--color-chrome-fill);
+}
+
+pre {
+  padding: var(--space-l);
+  overflow-x: auto;
+  line-height: var(--line-height-relaxed);
+  border: 1px solid var(--color-chrome-border);
+  border-radius: 0.75rem;
+  background: var(--color-chrome-fill);
+}
+
+pre code {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+blockquote {
+  padding-left: var(--space-l);
+  border-left: 3px solid var(--color-chrome-border);
+  color: var(--color-chrome-fg-muted);
+  font-size: var(--font-size-l);
+  line-height: var(--line-height-relaxed);
+}
+
+hr {
+  margin: var(--space-xl) 0;
+  border: 0;
+  border-top: 1px solid var(--color-chrome-border);
+}
+
+mark {
+  padding: 0 0.2em;
+  background: var(--color-chrome-fill);
+}
+
+sup,
+sub {
+  position: relative;
+  font-size: var(--font-size-xxs);
+  line-height: 0;
+}
+
+sup {
+  top: -0.4em;
+}
+
+sub {
+  bottom: -0.15em;
+}
+
+abbr[title] {
+  text-decoration: underline dotted;
+  text-underline-offset: 0.15em;
+  cursor: help;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: var(--space-s) var(--space-m);
+  border-bottom: 1px solid var(--color-chrome-border);
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  font-weight: var(--font-weight-semibold);
+}
+
+caption {
+  padding-bottom: var(--space-s);
+  color: var(--color-chrome-fg-muted);
+  font-size: var(--font-size-s);
+  text-align: left;
+}

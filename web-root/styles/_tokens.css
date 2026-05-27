@@ -1,0 +1,53 @@
+:root {
+  --color-chrome-fill: #fff;
+  --color-chrome-fg: #000;
+  --color-chrome-fg-muted: #444;
+  --color-chrome-border: #ddd;
+
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+
+  --font-size-xxs: 10px;
+  --font-size-xs: 12px;
+  --font-size-s: 14px;
+  --font-size-m: 16px;
+  --font-size-l: 18px;
+  --font-size-xl: 24px;
+  --font-size-xxl: 32px;
+  --font-size-xxxl: 40px;
+  --font-size-xxxxl: 56px;
+
+  --line-height-tight: 1.05;
+  --line-height-snug: 1.15;
+  --line-height-normal: 1.25;
+  --line-height-relaxed: 1.5;
+  --line-height-loose: 1.75;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --line-length-s: 32rem;
+  --line-length-m: 42rem;
+  --line-length-l: 56rem;
+
+  --space-xxs: 1px;
+  --space-xs: 2px;
+  --space-s: 4px;
+  --space-m: 8px;
+  --space-l: 16px;
+  --space-xl: 32px;
+  --space-xxl: 64px;
+  --space-xxxl: 128px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-chrome-fill: #000;
+    --color-chrome-fg: #fff;
+    --color-chrome-fg-muted: #bbb;
+    --color-chrome-border: #333;
+  }
+}

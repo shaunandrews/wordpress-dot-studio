@@ -1,0 +1,23 @@
+/* Home workflow */
+.home-workflow {
+}
+
+.home-workflow-process {
+    border: 1px solid var(--color-chrome-border);
+}
+
+.home-workflow-process .inline-svg svg {
+  max-width: 200px;
+}
+
+.workflow-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-l);
+  text-align: center;
+}
+
+.workflow-card > * {
+  margin: 0;
+}

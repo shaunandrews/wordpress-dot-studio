@@ -1,0 +1,15 @@
+/* Background dot/cross grid. Drop <dot-grid> into any position:relative section;
+ * it fills the section behind content. Color follows `color` (inherits the
+ * theme's --color-chrome-fg); use the `opacity` attribute to keep it subtle. */
+dot-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+dot-grid canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
