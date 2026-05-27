@@ -1,6 +1,6 @@
 <script setup>
 import Button from './Button.vue';
-import InlineSvg from './InlineSvg.vue';
+import FpoImage from './FpoImage.vue';
 
 const interfaces = [
   {
@@ -8,40 +8,32 @@ const interfaces = [
     title: 'Studio App',
     body: 'A local agentic environment for managing your WordPress sites and apps.',
     cta: 'About the apps',
-    illustration: '/assets/illustration-interface-app.svg',
-    illustrationLabel: 'Studio App desktop workspace illustration',
   },
   {
     key: 'cli',
     title: 'Studio CLI',
     body: 'Perfect for automation and agentic workflows anywhere you can launch a terminal.',
     cta: 'Meet the CLI',
-    illustration: '/assets/illustration-interface-cli.svg',
-    illustrationLabel: 'Studio CLI terminal illustration',
   },
   {
     key: 'web',
     title: 'Studio Web',
     body: 'Access your Studio from anywhere and collaborate with your team.',
     cta: 'Get started on Web',
-    illustration: '/assets/illustration-interface-web.svg',
-    illustrationLabel: 'Studio Web staging, production, and sharing illustration',
   },
 ];
 </script>
 
 <template>
-  <section class="home-interfaces px-l">
-    <h2 class="type-heading type-xxl">Three tools. One Studio.</h2>
-    <p class="type-body type-l">Use the tool that fits the work: a desktop workspace, an automation-ready CLI, and a web dashboard for teams and remote state.</p>
+  <section class="home-interfaces hstack gap-xxl align-start px-l">
+    <div class="interface-intro">
+      <h2 class="type-heading type-xxl">Three tools. One Studio.</h2>
+      <p class="type-body type-l">Use the tool that fits the work: a desktop workspace, an automation-ready CLI, and a web dashboard for teams and remote state.</p>
+    </div>
 
     <div class="interface-desk hstack gap-xl">
       <article v-for="item in interfaces" :key="item.key" class="interface-card">
-        <InlineSvg
-          class="interface-illustration"
-          :src="item.illustration"
-          :label="item.illustrationLabel"
-        />
+        <FpoImage class="interface-fpo" />
         <div class="interface-copy">
           <h3 class="type-heading type-xl">{{ item.title }}</h3>
           <p class="type-body type-m">{{ item.body }}</p>
@@ -54,18 +46,25 @@ const interfaces = [
 
 <style scoped>
 .home-interfaces {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xl);
+  width: 100%;
 }
 
-.home-interfaces > .type-heading,
-.home-interfaces > .type-body {
+.interface-intro {
+  flex: 0 0 min(28rem, 32%);
+}
+
+.interface-intro > * {
   margin-bottom: 0;
 }
 
+.interface-intro > * + * {
+  margin-top: var(--space-l);
+}
+
 .interface-desk {
+  flex: 1 1 auto;
   align-items: stretch;
+  min-width: 0;
 }
 
 .interface-card {
@@ -79,17 +78,9 @@ const interfaces = [
   border-radius: 18px;
 }
 
-.interface-card > * {
-  margin: 0;
-}
-
-.interface-illustration {
+.interface-fpo {
   width: 100%;
-  color: var(--color-chrome-fg);
-}
-
-.interface-illustration :deep(svg) {
-  width: 100%;
+  min-height: 12rem;
 }
 
 .interface-copy {
@@ -108,8 +99,13 @@ const interfaces = [
 }
 
 @media (max-width: 900px) {
+  .home-interfaces,
   .interface-desk {
     flex-direction: column;
+  }
+
+  .interface-intro {
+    flex-basis: auto;
   }
 }
 </style>
