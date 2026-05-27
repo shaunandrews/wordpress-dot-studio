@@ -15,9 +15,9 @@ defineProps({
 </script>
 
 <template>
-  <article class="workflow-card">
+  <article class="workflow-card vstack">
     <InlineSvg :src="`/assets/illustration-${step.key}.svg`" />
-    <div class="px-l pb-xl">
+    <div>
       <h3 class="type-heading" :class="step.headingSize ?? 'type-xl'">{{ step.title }}</h3>
       <p class="type-body type-s">{{ step.body }}</p>
     </div>
@@ -26,10 +26,6 @@ defineProps({
 
 <style scoped>
 .workflow-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-l);
   text-align: center;
 }
 
