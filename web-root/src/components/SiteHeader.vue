@@ -169,13 +169,11 @@ onBeforeUnmount(() => {
 .site-nav {
   --active-nav-width: 0px;
   --active-nav-x: 0px;
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--color-chrome-fill-transparent);
   backdrop-filter: blur(4px);
-  /* border-top: 1px solid rgba(255,255,255,1); */
-  /* border-bottom: 1px solid rgba(0,0,0,0.15); */
   box-shadow:
-    0 2px 0.5px rgba(255, 255, 255, 0.8) inset,
-    0 1px 3px rgba(0, 0, 0, 0.15);
+    0 2px 0.5px var(--color-chrome-fill-transparent) inset,
+    0 1px 3px var(--color-nav-shadow);
   padding: 4px;
   border-radius: 10px;
   position: relative;
@@ -188,7 +186,7 @@ onBeforeUnmount(() => {
   left: 0;
   width: var(--active-nav-width);
   border-radius: 6px;
-  background: var(--color-chrome-fg);
+  background: var(--color-nav-indicator-fill);
   opacity: 0;
   transform: translateX(var(--active-nav-x));
   transition:
@@ -220,10 +218,10 @@ onBeforeUnmount(() => {
 }
 
 .site-nav .nav-link-active {
-  color: var(--color-chrome-fill);
+  color: var(--color-nav-indicator-fg);
 
   &:hover {
-    color: var(--color-chrome-fill);
+    color: var(--color-nav-indicator-fg);
   }
 }
 

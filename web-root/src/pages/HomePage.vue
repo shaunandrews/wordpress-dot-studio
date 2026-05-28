@@ -12,7 +12,7 @@ import HomeWorkflow from '../components/HomeWorkflow.vue';
 </script>
 
 <template>
-  <main id="main" class="page-home vstack gap-xl">
+  <main id="main" class="page-home vstack">
     <HomeHero />
     <HomeWorkflow />
     <HomeInterfaces />

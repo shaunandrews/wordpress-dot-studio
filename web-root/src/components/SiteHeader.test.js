@@ -13,6 +13,12 @@ describe('SiteHeader', () => {
     assert.match(source, /\.site-nav \.nav-link-active\s*{/);
   });
 
+  it('uses theme-aware nav color tokens', () => {
+    assert.match(source, /background:\s*var\(--color-chrome-fill-transparent\)/);
+    assert.match(source, /background:\s*var\(--color-nav-indicator-fill\)/);
+    assert.match(source, /color:\s*var\(--color-nav-indicator-fg\)/);
+  });
+
   it('renders a dedicated active nav indicator', () => {
     assert.match(source, /ref="siteNav"/);
     assert.match(source, /class="site-nav-indicator"/);

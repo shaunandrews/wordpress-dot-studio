@@ -48,11 +48,25 @@ const props = defineProps({
 const rootStyle = computed(() => ({
   '--section-intro-max-width': props.maxWidth,
 }));
+
+const titleLines = computed(() => props.title.split('\n'));
 </script>
 
 <template>
-  <div class="section-intro" :class="[`section-intro-${align}`, `section-intro-v-${verticalAlign}`]" :style="rootStyle">
-    <h2 class="type-heading" :class="titleSize">{{ title }}</h2>
+  <div
+    class="section-intro"
+    :class="[`section-intro-${align}`, `section-intro-v-${verticalAlign}`]"
+    :style="rootStyle"
+  >
+    <h2 class="type-heading" :class="titleSize">
+      <span
+        v-for="(line, index) in titleLines"
+        :key="`${line}-${index}`"
+        class="section-intro-title-line"
+      >
+        {{ line }}
+      </span>
+    </h2>
     <p class="type-body" :class="bodySize">{{ body }}</p>
   </div>
 </template>
@@ -99,5 +113,9 @@ const rootStyle = computed(() => ({
 
 .section-intro > * {
   margin: 0;
+}
+
+.section-intro-title-line {
+  display: block;
 }
 </style>

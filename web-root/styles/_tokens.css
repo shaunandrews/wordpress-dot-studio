@@ -1,8 +1,12 @@
 :root {
-  --color-chrome-fill: #eceff1;
+  --color-chrome-fill: #fff;
   --color-chrome-fg: #000;
   --color-chrome-fg-muted: #444;
   --color-chrome-border: #ddd;
+  --color-chrome-fill-transparent: rgb(255 255 255 / 0.8);
+  --color-nav-shadow: rgb(0 0 0 / 0.15);
+  --color-nav-indicator-fill: var(--color-chrome-fg);
+  --color-nav-indicator-fg: var(--color-chrome-fill);
   --color-theme-fill: #1038be;
   --color-theme-fill-accent: #0a2a8c;
   --color-theme-fill-highlight: rgb(108, 137, 224);
@@ -49,9 +53,13 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-chrome-fill: #0e0e15;
+    --color-chrome-fill: #000;
     --color-chrome-fg: #fff;
     --color-chrome-fg-muted: #bbb;
     --color-chrome-border: #333;
+    --color-chrome-fill-transparent: rgb(21 21 31 / 0.78);
+    --color-nav-shadow: rgb(0 0 0 / 0.46);
+    --color-nav-indicator-fill: #f7f7fb;
+    --color-nav-indicator-fg: #111119;
   }
 }

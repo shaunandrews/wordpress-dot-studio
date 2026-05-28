@@ -1,0 +1,2 @@
+- Don't start the dev server without being asked to; the user likely has it running already.
+- The user will do visual testing; you don't need to open the browser to run visual tests, just tell the user your work is ready for review.
