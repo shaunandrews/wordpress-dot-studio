@@ -8,11 +8,14 @@ import { VFX } from '@vfx-js/core';
 import { PixelateEffect } from '@vfx-js/effects';
 
 const TRANSITION_DURATION = 720;
-const INITIAL_PIXEL_SIZE = 10;
+const TRANSITION_SETTLE_DELAY = 90;
+const INITIAL_PIXEL_SIZE = 5;
 const PIXEL_SIZE_AMPLITUDE = 0.1;
 const PIXEL_SIZE_CYCLE_MS = 10200;
 const MAX_EFFECT_PIXEL_WIDTH = 1400;
 const EFFECT_RENDER_SCALE = 0.55;
+const LOCAL_PIXEL_RENDER_SCALE = 0.09;
+const KEN_BURNS_CYCLE_MS = 16800;
 const VFX_SETTINGS = {
   pixelSize: INITIAL_PIXEL_SIZE,
   pixelAmplitude: PIXEL_SIZE_AMPLITUDE,
@@ -21,24 +24,32 @@ const VFX_SETTINGS = {
   targetXMax: 78,
   targetYMin: 24,
   targetYMax: 96,
-  blobSpeedMin: 4.2,
-  blobSpeedMax: 5.9,
-  targetHoldMinMs: 13900,
-  targetHoldMaxMs: 8800,
-  radiusScale: 155,
-  wobbleScale: 193,
-  breatheMs: 1000,
-  driftMs: 5800,
-  flowX: 3.5,
-  flowY: 4.7,
-  flowXMs: 1500,
-  flowYMs: 7400,
+  blobSpeedMin: 8.5,
+  blobSpeedMax: 12.5,
+  targetHoldMinMs: 4200,
+  targetHoldMaxMs: 7600,
+  radiusScale: 168,
+  wobbleScale: 226,
+  breatheMs: 1150,
+  driftMs: 3100,
+  flowX: 8.8,
+  flowY: 10.6,
+  flowXMs: 2300,
+  flowYMs: 3400,
+  localMaskSpeed: 1.72,
+  localMaskRadiusScale: 0.72,
+  localMaskFlowScale: 1.42,
 };
 
 const props = defineProps({
   src: {
     type: String,
     required: true,
+  },
+  renderMode: {
+    type: String,
+    default: 'vfx',
+    validator: (value) => ['vfx', 'local-pixel'].includes(value),
   },
   sources: {
     type: Array,
@@ -59,6 +70,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 let vfxInstance = null;
 let animationFrame = 0;
 let transitionTimer = 0;
+let transitionFrame = 0;
 let transitionToken = 0;
 let cancelled = false;
 let effectTransition = null;
@@ -126,6 +138,24 @@ function updatePixelSize(timestamp) {
   pixelEffect.setParams({ size: Number(size.toFixed(2)) });
 }
 
+function updateKenBurns(timestamp) {
+  if (!root.value || !motionStart) {
+    return;
+  }
+
+  const cycle = ((timestamp - motionStart) % KEN_BURNS_CYCLE_MS) / KEN_BURNS_CYCLE_MS;
+  const progress = cycle <= 0.5 ? cycle * 2 : (1 - cycle) * 2;
+  const easedProgress = 0.5 - Math.cos(progress * Math.PI) / 2;
+  const scale = 1.04 + easedProgress * 0.08;
+  const x = -1.2 + easedProgress * 2.6;
+  const y = -0.6 + easedProgress * 1.4;
+
+  root.value.style.setProperty(
+    '--hero-ken-burns-transform',
+    `scale(${scale.toFixed(4)}) translate3d(${x.toFixed(3)}%, ${y.toFixed(3)}%, 0)`
+  );
+}
+
 function updateLiquidBlob(blob, timestamp, deltaSeconds, bounds) {
   if (!blob.nextTargetAt || timestamp >= blob.nextTargetAt) {
     chooseNextBlobTarget(blob, timestamp);
@@ -151,18 +181,24 @@ function updateLiquidBlob(blob, timestamp, deltaSeconds, bounds) {
   }
 
   const elapsed = timestamp - motionStart;
-  const radius = blob.radius * (VFX_SETTINGS.radiusScale / 100);
+  const localMaskBoost = props.renderMode === 'local-pixel' ? VFX_SETTINGS.localMaskSpeed : 1;
+  const localRadiusScale =
+    props.renderMode === 'local-pixel' ? VFX_SETTINGS.localMaskRadiusScale : 1;
+  const localFlowScale = props.renderMode === 'local-pixel' ? VFX_SETTINGS.localMaskFlowScale : 1;
+  const radius = blob.radius * (VFX_SETTINGS.radiusScale / 100) * localRadiusScale;
   const wobble = blob.wobble * (VFX_SETTINGS.wobbleScale / 100);
-  const breathe = Math.sin(elapsed / VFX_SETTINGS.breatheMs + blob.phase);
-  const drift = Math.cos(elapsed / VFX_SETTINGS.driftMs + blob.phase * 1.3);
+  const breathe = Math.sin((elapsed / VFX_SETTINGS.breatheMs) * localMaskBoost + blob.phase);
+  const drift = Math.cos((elapsed / VFX_SETTINGS.driftMs) * localMaskBoost + blob.phase * 1.3);
   const flowX =
-    Math.sin(elapsed / VFX_SETTINGS.flowXMs + blob.phase * 1.7) *
+    Math.sin((elapsed / VFX_SETTINGS.flowXMs) * localMaskBoost + blob.phase * 1.7) *
     bounds.width *
-    (VFX_SETTINGS.flowX / 100);
+    (VFX_SETTINGS.flowX / 100) *
+    localFlowScale;
   const flowY =
-    Math.cos(elapsed / VFX_SETTINGS.flowYMs + blob.phase * 1.1) *
+    Math.cos((elapsed / VFX_SETTINGS.flowYMs) * localMaskBoost + blob.phase * 1.1) *
     bounds.height *
-    (VFX_SETTINGS.flowY / 100);
+    (VFX_SETTINGS.flowY / 100) *
+    localFlowScale;
   const width = Math.round(radius * (1.12 + breathe * wobble));
   const height = Math.round(radius * (0.9 + drift * wobble * 0.84));
 
@@ -170,6 +206,29 @@ function updateLiquidBlob(blob, timestamp, deltaSeconds, bounds) {
   root.value.style.setProperty(`--vfx-blob-${blob.id}-y`, `${bounds.height * blob.y + flowY}px`);
   root.value.style.setProperty(`--vfx-blob-${blob.id}-width`, `${width}px`);
   root.value.style.setProperty(`--vfx-blob-${blob.id}-height`, `${height}px`);
+}
+
+function updateLiquidMask(timestamp) {
+  if (!root.value) {
+    return;
+  }
+
+  const deltaSeconds = Math.min(0.064, (timestamp - lastFrame) / 1000);
+  lastFrame = timestamp;
+
+  const bounds = root.value.getBoundingClientRect();
+  liquidBlobs.forEach((blob) => updateLiquidBlob(blob, timestamp, deltaSeconds, bounds));
+  root.value.style.setProperty('--vfx-lens-opacity', '1');
+}
+
+function updatePixelLayer(timestamp) {
+  if (props.renderMode === 'vfx') {
+    updatePixelSize(timestamp);
+  }
+
+  if (renderEffectSource(timestamp)) {
+    updateEffectTexture();
+  }
 }
 
 function animateLens(timestamp) {
@@ -187,37 +246,44 @@ function animateLens(timestamp) {
     liquidBlobs.forEach((blob) => chooseNextBlobTarget(blob, timestamp));
   }
 
-  const deltaSeconds = Math.min(0.064, (timestamp - lastFrame) / 1000);
-  lastFrame = timestamp;
-  updatePixelSize(timestamp);
-
-  const bounds = root.value.getBoundingClientRect();
-  liquidBlobs.forEach((blob) => updateLiquidBlob(blob, timestamp, deltaSeconds, bounds));
-  root.value.style.setProperty('--vfx-lens-opacity', '1');
-
-  if (renderEffectSource(timestamp)) {
-    updateEffectTexture();
-  }
+  updateKenBurns(timestamp);
+  updateLiquidMask(timestamp);
+  updatePixelLayer(timestamp);
 
   animationFrame = window.requestAnimationFrame(animateLens);
 }
 
 function completeTransition(nextSrc, token) {
   window.clearTimeout(transitionTimer);
+  window.cancelAnimationFrame(transitionFrame);
   transitionTimer = window.setTimeout(() => {
     if (token !== transitionToken || cancelled) {
       return;
     }
 
     currentSrc.value = nextSrc;
-    incomingSrc.value = null;
-    effectTransition = null;
     sourceNeedsUpdate = true;
 
     if (renderEffectSource()) {
       updateEffectTexture();
     }
-  }, TRANSITION_DURATION);
+
+    transitionFrame = window.requestAnimationFrame(() => {
+      transitionFrame = window.requestAnimationFrame(() => {
+        if (token !== transitionToken || cancelled) {
+          return;
+        }
+
+        incomingSrc.value = null;
+        effectTransition = null;
+        sourceNeedsUpdate = true;
+
+        if (renderEffectSource()) {
+          updateEffectTexture();
+        }
+      });
+    });
+  }, TRANSITION_DURATION + TRANSITION_SETTLE_DELAY);
 }
 
 function preloadImage(src) {
@@ -266,16 +332,18 @@ function warmImageCache() {
   window.setTimeout(warm, 0);
 }
 
-function resizeEffectSource() {
+function resizeEffectSource(timestamp = window.performance.now()) {
   if (!root.value || !effectSource.value) {
     return false;
   }
 
   const bounds = root.value.getBoundingClientRect();
+  const renderScale =
+    props.renderMode === 'local-pixel' ? LOCAL_PIXEL_RENDER_SCALE : EFFECT_RENDER_SCALE;
   const ratio = Math.min(
     window.devicePixelRatio || 1,
     MAX_EFFECT_PIXEL_WIDTH / Math.max(bounds.width, 1),
-    EFFECT_RENDER_SCALE
+    renderScale
   );
   const width = Math.max(1, Math.round(bounds.width * ratio));
   const height = Math.max(1, Math.round(bounds.height * ratio));
@@ -290,13 +358,23 @@ function resizeEffectSource() {
   return true;
 }
 
-function drawPainting(context, painting, alpha) {
+function easeTransitionProgress(progress) {
+  return 0.5 - Math.cos(progress * Math.PI) / 2;
+}
+
+function drawPainting(context, painting, alpha, clipProgress = 1) {
   if (!painting?.naturalWidth || !painting?.naturalHeight || !effectSource.value) {
     return;
   }
 
   const canvasWidth = effectSource.value.width;
   const canvasHeight = effectSource.value.height;
+  const clippedWidth = canvasWidth * clipProgress;
+
+  if (clippedWidth <= 0) {
+    return;
+  }
+
   const scale = Math.max(
     canvasWidth / painting.naturalWidth,
     canvasHeight / painting.naturalHeight
@@ -307,6 +385,9 @@ function drawPainting(context, painting, alpha) {
   const y = (canvasHeight - height) * 0.34;
 
   context.save();
+  context.beginPath();
+  context.rect(0, 0, clippedWidth, canvasHeight);
+  context.clip();
   context.globalAlpha = alpha;
   context.drawImage(painting, x, y, width, height);
   context.restore();
@@ -317,7 +398,7 @@ function renderEffectSource(timestamp = window.performance.now()) {
     return false;
   }
 
-  const resized = resizeEffectSource();
+  const resized = resizeEffectSource(timestamp);
   const context = effectSource.value.getContext('2d');
   const currentImage = sourceImages.get(currentSrc.value);
 
@@ -329,9 +410,10 @@ function renderEffectSource(timestamp = window.performance.now()) {
 
   if (effectTransition) {
     const progress = Math.min(1, (timestamp - effectTransition.start) / TRANSITION_DURATION);
+    const easedProgress = easeTransitionProgress(progress);
 
-    drawPainting(context, effectTransition.fromImage, 1 - progress);
-    drawPainting(context, effectTransition.toImage, progress);
+    drawPainting(context, effectTransition.fromImage, 1);
+    drawPainting(context, effectTransition.toImage, easedProgress, easedProgress);
     return true;
   }
 
@@ -352,7 +434,13 @@ function updateEffectTexture() {
 }
 
 async function applyEffect() {
-  if (!root.value || !effectSource.value || vfxInstance || cancelled) {
+  if (
+    props.renderMode !== 'vfx' ||
+    !root.value ||
+    !effectSource.value ||
+    vfxInstance ||
+    cancelled
+  ) {
     return;
   }
 
@@ -430,7 +518,11 @@ onMounted(async () => {
 
     if (!prefersReducedMotion.matches) {
       animationFrame = window.requestAnimationFrame(animateLens);
-      await applyEffect();
+      if (props.renderMode === 'vfx') {
+        await applyEffect();
+      }
+    } else if (props.renderMode === 'local-pixel') {
+      renderEffectSource();
     }
   }
 });
@@ -439,6 +531,7 @@ onBeforeUnmount(() => {
   cancelled = true;
   transitionToken += 1;
   window.clearTimeout(transitionTimer);
+  window.cancelAnimationFrame(transitionFrame);
   window.cancelAnimationFrame(animationFrame);
   vfxInstance?.remove(effectSource.value);
   vfxInstance?.destroy();
@@ -446,7 +539,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div ref="root" class="hero-vfx-image">
+  <div ref="root" class="hero-vfx-image" :class="`hero-vfx-image-${renderMode}`">
     <canvas ref="effectSource" class="hero-vfx-image-effect-source"></canvas>
     <img :src="currentSrc" alt="" class="hero-vfx-image-current" decoding="async" />
     <img
@@ -462,6 +555,7 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .hero-vfx-image {
+  --hero-ken-burns-transform: scale(1.04) translate3d(-1.2%, -0.6%, 0);
   --vfx-lens-opacity: 0;
   --vfx-blob-a-x: 50%;
   --vfx-blob-a-y: 50%;
@@ -492,6 +586,9 @@ onBeforeUnmount(() => {
   height: 100%;
   object-fit: cover;
   object-position: center 34%;
+  transform-origin: center 34%;
+  transform: var(--hero-ken-burns-transform);
+  will-change: transform;
 }
 
 .hero-vfx-image-effect-source {
@@ -500,71 +597,199 @@ onBeforeUnmount(() => {
   mask-image: none !important;
 }
 
-.hero-vfx-image-incoming {
-  z-index: 1;
-  opacity: 0;
-  animation: hero-image-fade-in 720ms ease forwards;
-}
-
-.hero-vfx-image :deep(canvas) {
-  z-index: 2;
-  opacity: var(--vfx-lens-opacity);
+.hero-vfx-image-local-pixel .hero-vfx-image-effect-source {
+  z-index: 2 !important;
+  opacity: var(--vfx-lens-opacity) !important;
+  image-rendering: pixelated;
+  animation: hero-local-mask-flow 6200ms ease-in-out infinite alternate;
   transition: opacity 180ms ease;
+  will-change: mask-position, transform;
   -webkit-mask-image:
     radial-gradient(
       ellipse var(--vfx-blob-a-width) var(--vfx-blob-a-height) at var(--vfx-blob-a-x)
         var(--vfx-blob-a-y),
-      #000 0 46%,
-      rgb(0 0 0 / 0.72) 68%,
+      #000 0 38%,
+      rgb(0 0 0 / 0.72) 62%,
       transparent 100%
     ),
     radial-gradient(
       ellipse var(--vfx-blob-b-width) var(--vfx-blob-b-height) at var(--vfx-blob-b-x)
         var(--vfx-blob-b-y),
-      #000 0 44%,
-      rgb(0 0 0 / 0.68) 67%,
+      #000 0 36%,
+      rgb(0 0 0 / 0.68) 61%,
       transparent 100%
     ),
     radial-gradient(
       ellipse var(--vfx-blob-c-width) var(--vfx-blob-c-height) at var(--vfx-blob-c-x)
         var(--vfx-blob-c-y),
-      #000 0 44%,
-      rgb(0 0 0 / 0.66) 66%,
+      #000 0 36%,
+      rgb(0 0 0 / 0.66) 60%,
+      transparent 100%
+    ) !important;
+  mask-image:
+    radial-gradient(
+      ellipse var(--vfx-blob-a-width) var(--vfx-blob-a-height) at var(--vfx-blob-a-x)
+        var(--vfx-blob-a-y),
+      #000 0 38%,
+      rgb(0 0 0 / 0.72) 62%,
+      transparent 100%
+    ),
+    radial-gradient(
+      ellipse var(--vfx-blob-b-width) var(--vfx-blob-b-height) at var(--vfx-blob-b-x)
+        var(--vfx-blob-b-y),
+      #000 0 36%,
+      rgb(0 0 0 / 0.68) 61%,
+      transparent 100%
+    ),
+    radial-gradient(
+      ellipse var(--vfx-blob-c-width) var(--vfx-blob-c-height) at var(--vfx-blob-c-x)
+        var(--vfx-blob-c-y),
+      #000 0 36%,
+      rgb(0 0 0 / 0.66) 60%,
+      transparent 100%
+    ) !important;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size:
+    104% 104%,
+    103% 103%,
+    105% 105%;
+  mask-size:
+    104% 104%,
+    103% 103%,
+    105% 105%;
+}
+
+@keyframes hero-local-mask-flow {
+  0% {
+    -webkit-mask-position:
+      -1.4vw 0.2vh,
+      1.2vw -0.6vh,
+      -0.6vw 0.8vh;
+    mask-position:
+      -1.4vw 0.2vh,
+      1.2vw -0.6vh,
+      -0.6vw 0.8vh;
+  }
+
+  48% {
+    -webkit-mask-position:
+      1.1vw -0.7vh,
+      -1.5vw 0.9vh,
+      1.3vw 0.1vh;
+    mask-position:
+      1.1vw -0.7vh,
+      -1.5vw 0.9vh,
+      1.3vw 0.1vh;
+  }
+
+  100% {
+    -webkit-mask-position:
+      0.7vw 1vh,
+      -0.8vw -0.4vh,
+      1.8vw -0.9vh;
+    mask-position:
+      0.7vw 1vh,
+      -0.8vw -0.4vh,
+      1.8vw -0.9vh;
+  }
+}
+
+.hero-vfx-image-incoming {
+  z-index: 1;
+  opacity: 0;
+  clip-path: inset(0 100% 0 0);
+  animation: hero-image-cross-fade-wipe 720ms cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  will-change: clip-path, opacity, transform;
+}
+
+.hero-vfx-image :deep(canvas) {
+  z-index: 2;
+  opacity: var(--vfx-lens-opacity);
+  transform-origin: center 34%;
+  transform: var(--hero-ken-burns-transform);
+  will-change: transform;
+  transition: opacity 180ms ease;
+  -webkit-mask-image:
+    radial-gradient(
+      ellipse var(--vfx-blob-a-width) var(--vfx-blob-a-height) at var(--vfx-blob-a-x)
+        var(--vfx-blob-a-y),
+      #000 0 38%,
+      rgb(0 0 0 / 0.72) 62%,
+      transparent 100%
+    ),
+    radial-gradient(
+      ellipse var(--vfx-blob-b-width) var(--vfx-blob-b-height) at var(--vfx-blob-b-x)
+        var(--vfx-blob-b-y),
+      #000 0 36%,
+      rgb(0 0 0 / 0.68) 61%,
+      transparent 100%
+    ),
+    radial-gradient(
+      ellipse var(--vfx-blob-c-width) var(--vfx-blob-c-height) at var(--vfx-blob-c-x)
+        var(--vfx-blob-c-y),
+      #000 0 36%,
+      rgb(0 0 0 / 0.66) 60%,
       transparent 100%
     );
   mask-image:
     radial-gradient(
       ellipse var(--vfx-blob-a-width) var(--vfx-blob-a-height) at var(--vfx-blob-a-x)
         var(--vfx-blob-a-y),
-      #000 0 46%,
-      rgb(0 0 0 / 0.72) 68%,
+      #000 0 38%,
+      rgb(0 0 0 / 0.72) 62%,
       transparent 100%
     ),
     radial-gradient(
       ellipse var(--vfx-blob-b-width) var(--vfx-blob-b-height) at var(--vfx-blob-b-x)
         var(--vfx-blob-b-y),
-      #000 0 44%,
-      rgb(0 0 0 / 0.68) 67%,
+      #000 0 36%,
+      rgb(0 0 0 / 0.68) 61%,
       transparent 100%
     ),
     radial-gradient(
       ellipse var(--vfx-blob-c-width) var(--vfx-blob-c-height) at var(--vfx-blob-c-x)
         var(--vfx-blob-c-y),
-      #000 0 44%,
-      rgb(0 0 0 / 0.66) 66%,
+      #000 0 36%,
+      rgb(0 0 0 / 0.66) 60%,
       transparent 100%
     );
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
 }
 
-@keyframes hero-image-fade-in {
+@keyframes hero-image-cross-fade-wipe {
   from {
     opacity: 0;
+    clip-path: inset(0 100% 0 0);
+  }
+
+  42% {
+    opacity: 0.72;
   }
 
   to {
     opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-vfx-image-local-pixel .hero-vfx-image-effect-source,
+  .hero-vfx-image-incoming {
+    animation: none;
+  }
+
+  .hero-vfx-image-current,
+  .hero-vfx-image-incoming,
+  .hero-vfx-image-effect-source,
+  .hero-vfx-image :deep(canvas) {
+    transform: none;
+  }
+
+  .hero-vfx-image-incoming {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
   }
 }
 </style>

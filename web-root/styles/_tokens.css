@@ -12,9 +12,9 @@
   --color-theme-fill-highlight: rgb(108, 137, 224);
   --color-theme-fg: #fff;
 
-  --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-heading: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
 
   --font-size-xxs: 10px;
   --font-size-xs: 12px;
@@ -49,6 +49,14 @@
   --space-xl: 32px;
   --space-xxl: 64px;
   --space-xxxl: 128px;
+
+  /*
+   * Responsive breakpoints
+   * Use these literal values in media/container queries:
+   * - 1120px: page stacks, sticky rails, and broad multi-column sections collapse.
+   * - 760px: narrow viewport controls, single-column grids, and full-width CTAs.
+   * - 560px: dense component/container simplification only.
+   */
 }
 
 @media (prefers-color-scheme: dark) {

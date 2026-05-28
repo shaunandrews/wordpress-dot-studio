@@ -8,8 +8,8 @@ import Button from './Button.vue';
 import browserFirefox from '../../assets/browser-firefox.svg?url';
 import browserChrome from '../../assets/browser-google-chrome.svg?url';
 import browserSafari from '../../assets/browser-safari.svg?url';
-import platformMacos from '../../assets/platform-macos-finder.svg?url';
-import platformTerminal from '../../assets/platform-terminal.svg?url';
+import iconMacosFinder from '../../assets/icon-macos-finder.svg?url';
+import iconTerminal from '../../assets/icon-terminal.svg?url';
 import platformWindows from '../../assets/platform-windows.svg?url';
 
 const webBrowsers = [
@@ -24,7 +24,7 @@ const downloads = [
     body: 'Apple Silicon and Intel',
     cta: 'Download for macOS',
     ctaHref: '/download',
-    icon: platformMacos,
+    icon: iconMacosFinder,
   },
   {
     title: 'Windows',
@@ -37,7 +37,7 @@ const downloads = [
     title: 'CLI',
     body: 'Via Node Package Manager',
     command: 'npm install -g wordpress-studio',
-    icon: platformTerminal,
+    icon: iconTerminal,
   },
   {
     title: 'Web',
@@ -88,15 +88,18 @@ const downloads = [
   display: flex;
   flex-direction: column;
   gap: var(--space-l);
+  max-width: 680px;
+  margin: auto;
 }
 
 .download-options {
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-l);
 }
 
 .download-card {
-  flex: 1 1 13rem;
-  min-width: min(100%, 13rem);
+  min-width: 0;
   padding: var(--space-l);
   border: 1px dashed var(--color-chrome-border);
   border-radius: var(--space-m);
@@ -160,5 +163,11 @@ const downloads = [
   overflow-wrap: anywhere;
   font-family: var(--font-mono);
   font-size: var(--font-size-s);
+}
+
+@media (max-width: 760px) {
+  .download-options {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

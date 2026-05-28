@@ -377,7 +377,7 @@ const snippets = [
   }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 760px) {
   .cli-hero,
   .command-section,
   .automation-section,

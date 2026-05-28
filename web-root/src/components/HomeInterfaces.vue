@@ -274,7 +274,7 @@ onUnmounted(() => {
   line-height: var(--line-height-relaxed);
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1120px) {
   .home-interfaces {
     display: flex;
     flex-direction: column;

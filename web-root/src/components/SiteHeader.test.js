@@ -25,4 +25,18 @@ describe('SiteHeader', () => {
     assert.match(source, /--active-nav-x/);
     assert.match(source, /--active-nav-width/);
   });
+
+  it('renders a compact navigation menu for narrow viewports', () => {
+    assert.match(source, /class="compact-brand"/);
+    assert.match(source, /class="compact-nav-toggle"/);
+    assert.match(source, /activeCompactLabel/);
+    assert.match(source, /v-for="item in compactNavItems"/);
+    assert.match(source, /@media \(max-width: 760px\)/);
+  });
+
+  it('closes the compact menu after navigation or escape', () => {
+    assert.match(source, /function closeCompactMenu\(\)/);
+    assert.match(source, /@click="closeCompactMenu"/);
+    assert.match(source, /event\.key === 'Escape'/);
+  });
 });
