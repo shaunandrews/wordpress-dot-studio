@@ -15,4 +15,16 @@ describe('App', () => {
       /defineAsyncComponent\(\(\) => import\('\.\/components\/AgentationOverlay\.vue'\)\)/
     );
   });
+
+  it('includes footer links for Automattic and legal resources', () => {
+    assert.match(source, /href="https:\/\/automattic\.com\/"/);
+    assert.match(source, />\s*Automattic\s*<\/a>/);
+    assert.match(source, /href="https:\/\/automattic\.com\/work-with-us\/"/);
+    assert.match(source, />\s*Work with us\s*<\/a>/);
+    assert.match(source, /href="https:\/\/automattic\.com\/privacy\/"/);
+    assert.match(source, />\s*Privacy\s*<\/a>/);
+    assert.match(source, /href="https:\/\/wordpress\.com\/tos\/"/);
+    assert.match(source, />\s*Terms\s*<\/a>/);
+    assert.match(source, /rel="noopener noreferrer"/);
+  });
 });
