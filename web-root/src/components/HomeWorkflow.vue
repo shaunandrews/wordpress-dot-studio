@@ -59,9 +59,16 @@ const workflowSteps = [
         <div class="workflow-card-illustration">
           <InlineSvg :src="workflowIllustrations[step.key]" />
         </div>
-        <h3 class="type-heading type-l">{{ step.title }}</h3>
-        <p class="type-body type-s">{{ step.body }}</p>
-        <a class="workflow-card-link type-body type-s" :href="step.href">Learn more -></a>
+        <div class="workflow-card-copy vstack gap-s">
+          <h3 class="type-heading type-l">{{ step.title }}</h3>
+          <p class="type-body type-s">{{ step.body }}</p>
+          <a class="workflow-card-link type-body type-s" :href="step.href">
+            <span>Learn more</span>
+            <svg class="workflow-card-link-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+              <path d="M8.78 3.22 13.56 8l-4.78 4.78-1.06-1.06 2.97-2.97H2v-1.5h8.69L7.72 4.28l1.06-1.06Z" />
+            </svg>
+          </a>
+        </div>
       </article>
     </div>
   </section>
@@ -74,6 +81,7 @@ const workflowSteps = [
   margin: auto;
   padding-top: var(--space-xxxl);
   padding-right: var(--space-xl);
+  padding-bottom: var(--space-xxl);
   padding-left: var(--space-xxl);
 }
 
@@ -83,18 +91,33 @@ const workflowSteps = [
   z-index: 1;
 }
 
+.home-workflow-process {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
 .workflow-card {
-  flex: 1 1 0;
   min-width: 0;
   text-align: left;
+}
+
+.workflow-card-copy {
+  min-width: 0;
+  max-width: 28rem;
 }
 
 .workflow-card-illustration {
   display: flex;
   justify-content: flex-start;
+  align-items: flex-start;
   padding: 15px 30px;
   background: var(--color-chrome-fill);
   margin-bottom: var(--space-m);
+}
+
+.workflow-card-illustration :deep(svg) {
+  width: 100%;
+  max-width: 160px;
 }
 
 .workflow-card p {
@@ -103,19 +126,82 @@ const workflowSteps = [
 
 .workflow-card-link {
   width: fit-content;
-  color: var(--color-chrome-fg);
-  font-weight: var(--font-weight-medium);
-  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-s);
+  margin-top: var(--space-m);
+  color: var(--color-theme-fill);
+  font-weight: var(--font-weight-regular);
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+  text-decoration-thickness: 0.08em;
 }
 
 .workflow-card-link:hover,
 .workflow-card-link:focus-visible {
-  text-decoration: underline;
+  color: var(--color-theme-fill-accent);
+}
+
+.workflow-card-link-icon {
+  width: 1em;
+  height: 1em;
+  flex: 0 0 auto;
+  fill: currentColor;
+}
+
+@media (max-width: 1120px) {
+  .home-workflow-process {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-xl);
+  }
+
+  .workflow-card {
+    display: grid;
+    grid-template-columns: minmax(116px, 0.28fr) minmax(0, 1fr);
+    align-items: start;
+    gap: var(--space-xl);
+  }
+
+  .workflow-card-copy {
+    max-width: 26rem;
+  }
+
+  .workflow-card-illustration {
+    margin-bottom: 0;
+    padding: var(--space-s) var(--space-m);
+    justify-content: center;
+  }
+
+  .workflow-card-illustration :deep(svg) {
+    max-width: 108px;
+  }
 }
 
 @media (max-width: 760px) {
   .home-workflow {
     --home-hero-overhang: clamp(56px, 14vw, 84px);
+    padding-right: var(--space-l);
+    padding-bottom: var(--space-xl);
+    padding-left: var(--space-l);
+  }
+
+  .home-workflow-process {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .workflow-card {
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: var(--space-l);
+  }
+
+  .workflow-card-copy {
+    max-width: 22rem;
+  }
+
+  .workflow-card-illustration :deep(svg) {
+    max-width: 88px;
   }
 }
 </style>

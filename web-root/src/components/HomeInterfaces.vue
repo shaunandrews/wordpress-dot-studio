@@ -16,59 +16,26 @@ const interfaces = [
     navLabel: 'Desktop',
     title: 'Studio Desktop',
     image: screenshotStudioMacos,
-    features: [
-      {
-        title: 'Local site control',
-        body: 'Create, start, stop, and inspect WordPress projects from one focused desktop workspace.',
-      },
-      {
-        title: 'Built-in WordPress tools',
-        body: 'Jump into WP admin, open the local site, manage imports, and adjust settings without context switching.',
-      },
-      {
-        title: 'Agent-ready workspace',
-        body: 'Keep site state, paths, services, and debugging details visible for human and AI-assisted work.',
-      },
-    ],
+    summary:
+      'Create, start, stop, and inspect WordPress projects from one focused desktop workspace.',
+    href: '/desktop',
   },
   {
     key: 'cli',
     navLabel: 'CLI',
     title: 'Studio CLI',
     image: screenshotStudioCode,
-    features: [
-      {
-        title: 'Scriptable workflows',
-        body: 'Run repeatable Studio tasks from the terminal, shell scripts, or automated development flows.',
-      },
-      {
-        title: 'Portable context',
-        body: 'Bring WordPress-aware commands into the same environment where your code and agents already work.',
-      },
-      {
-        title: 'Fast project actions',
-        body: 'Move quickly through setup, inspection, and lifecycle commands without opening the full desktop app.',
-      },
-    ],
+    summary:
+      'Run repeatable Studio tasks from the terminal, shell scripts, or automated development flows.',
+    href: '/cli',
   },
   {
     key: 'web',
     navLabel: 'Web',
     title: 'Studio Web',
-    features: [
-      {
-        title: 'Shared visibility',
-        body: 'Give teammates a clear view into project status, activity, and running work from a browser.',
-      },
-      {
-        title: 'Remote continuity',
-        body: 'Check in on Studio work after you step away from your desk or switch machines.',
-      },
-      {
-        title: 'Team-ready surfaces',
-        body: 'Coordinate site work, reviews, and handoffs with interfaces designed for collaborative workflows.',
-      },
-    ],
+    summary:
+      'Give teammates a clear view into project status, activity, and running work from a browser.',
+    href: '/web',
   },
 ];
 
@@ -77,6 +44,7 @@ const activeKey = ref(interfaces[0].key);
 
 let observer;
 let scrollFrame;
+let interfacesScroller;
 
 const updateActiveInterface = () => {
   if (!root.value) {
@@ -84,10 +52,15 @@ const updateActiveInterface = () => {
   }
 
   const cards = [...root.value.querySelectorAll('.interface-card')];
+  const list = root.value.querySelector('.interfaces-list');
+  const isHorizontalScroller = list && list.scrollWidth > list.clientWidth + 1;
+  const listRect = list?.getBoundingClientRect();
   const viewportAnchor = window.innerHeight * 0.38;
   const closest = cards.reduce((current, card) => {
-    const { top } = card.getBoundingClientRect();
-    const distance = Math.abs(top - viewportAnchor);
+    const rect = card.getBoundingClientRect();
+    const distance = isHorizontalScroller
+      ? Math.abs(rect.left - listRect.left)
+      : Math.abs(rect.top - viewportAnchor);
 
     if (!current || distance < current.distance) {
       return { key: card.dataset.interfaceKey, distance };
@@ -112,6 +85,32 @@ const scheduleActiveUpdate = () => {
   });
 };
 
+const scrollToInterface = (key) => {
+  const list = root.value?.querySelector('.interfaces-list');
+  const card = root.value?.querySelector(`#interface-${key}`);
+
+  if (!card) {
+    return;
+  }
+
+  activeKey.value = key;
+
+  if (list && list.scrollWidth > list.clientWidth + 1) {
+    list.scrollTo({
+      left: card.offsetLeft - list.offsetLeft,
+      behavior: 'smooth',
+    });
+
+    return;
+  }
+
+  card.scrollIntoView({
+    behavior: 'smooth',
+    block: 'nearest',
+    inline: 'start',
+  });
+};
+
 onMounted(() => {
   updateActiveInterface();
 
@@ -121,12 +120,15 @@ onMounted(() => {
   });
 
   root.value?.querySelectorAll('.interface-card').forEach((card) => observer.observe(card));
+  interfacesScroller = root.value?.querySelector('.interfaces-list');
+  interfacesScroller?.addEventListener('scroll', scheduleActiveUpdate, { passive: true });
   window.addEventListener('scroll', scheduleActiveUpdate, { passive: true });
   window.addEventListener('resize', scheduleActiveUpdate);
 });
 
 onUnmounted(() => {
   observer?.disconnect();
+  interfacesScroller?.removeEventListener('scroll', scheduleActiveUpdate);
   window.removeEventListener('scroll', scheduleActiveUpdate);
   window.removeEventListener('resize', scheduleActiveUpdate);
 
@@ -157,6 +159,7 @@ onUnmounted(() => {
           :class="{ 'is-active': activeKey === item.key }"
           :aria-current="activeKey === item.key ? 'true' : undefined"
           :href="`#interface-${item.key}`"
+          @click.prevent="scrollToInterface(item.key)"
         >
           {{ item.navLabel }}
         </a>
@@ -179,11 +182,10 @@ onUnmounted(() => {
           loading="lazy"
         />
         <FpoImage v-else />
-        <div class="interface-features">
-          <article v-for="feature in item.features" :key="feature.title" class="interface-feature">
-            <h4 class="type-heading type-m">{{ feature.title }}</h4>
-            <p class="type-body type-s">{{ feature.body }}</p>
-          </article>
+        <div class="interface-detail vstack gap-m">
+          <h4 class="type-heading type-m">{{ item.title }}</h4>
+          <p class="type-body type-xs">{{ item.summary }}</p>
+          <a class="interface-detail-link type-body type-xs" :href="item.href">Learn more</a>
         </div>
       </article>
     </div>
@@ -193,7 +195,7 @@ onUnmounted(() => {
 <style scoped>
 .home-interfaces {
   display: grid;
-  grid-template-columns: minmax(12rem, 20rem) minmax(0, 1fr);
+  grid-template-columns: minmax(10rem, 16rem) minmax(0, 1fr);
   gap: clamp(var(--space-xl), 5vw, var(--space-xxxl));
   align-items: start;
 }
@@ -207,6 +209,10 @@ onUnmounted(() => {
 
 .interfaces-rail :deep(.section-intro) {
   margin-inline: 0;
+}
+
+.interfaces-rail :deep(.section-intro-title-line) {
+  white-space: nowrap;
 }
 
 .interfaces-nav {
@@ -250,35 +256,48 @@ onUnmounted(() => {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-.interface-features {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(var(--space-xl), 4vw, var(--space-xxl));
+.interface-detail {
   margin-top: var(--space-l);
-  width: 100%;
+  max-width: var(--line-length-s);
 }
 
-.interface-feature {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-m);
-}
-
-.interface-feature h4,
-.interface-feature p {
+.interface-detail h4,
+.interface-detail p {
   margin: 0;
 }
 
-.interface-feature p {
+.interface-detail p {
   color: var(--color-chrome-fg-muted);
   line-height: var(--line-height-relaxed);
 }
 
+.interface-detail-link {
+  width: fit-content;
+  color: var(--color-theme-fill);
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+
+.interface-detail-link:hover,
+.interface-detail-link:focus-visible {
+  color: var(--color-theme-fill-accent);
+}
+
 @media (max-width: 1120px) {
+  .home-interfaces {
+    grid-template-columns: minmax(10rem, 14rem) minmax(0, 1fr);
+    gap: var(--space-xl);
+  }
+}
+
+@media (max-width: 760px) {
   .home-interfaces {
     display: flex;
     flex-direction: column;
-    gap: var(--space-xxl);
+    gap: var(--space-xl);
+    overflow-x: clip;
+    padding-right: var(--space-l);
+    padding-left: var(--space-l);
   }
 
   .interfaces-rail {
@@ -287,18 +306,52 @@ onUnmounted(() => {
   }
 
   .interfaces-nav {
+    position: sticky;
+    top: var(--space-l);
+    z-index: 2;
     flex-direction: row;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: var(--space-m) var(--space-xl);
+    padding: var(--space-m) 0;
+    background: var(--color-chrome-fill-transparent);
+    backdrop-filter: blur(8px);
   }
 
   .interfaces-nav-link {
+    flex: 0 0 auto;
     font-size: var(--font-size-xl);
   }
 
-  .interface-features {
-    grid-template-columns: 1fr;
+  .interfaces-list {
+    display: flex;
+    flex-direction: row;
     gap: var(--space-xl);
+    box-sizing: border-box;
+    width: calc(100% + (var(--space-l) * 2));
+    max-width: none;
+    margin-right: calc(var(--space-l) * -1);
+    margin-left: calc(var(--space-l) * -1);
+    padding-right: var(--space-l);
+    padding-left: var(--space-l);
+    overflow-x: auto;
+    scroll-padding-inline: var(--space-l);
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .interface-card {
+    flex: 0 0 min(82vw, 520px);
+    scroll-snap-align: start;
+    scroll-margin-inline: var(--space-l);
+  }
+
+  .interface-image,
+  .interface-card :deep(.fpo-image) {
+    max-height: min(48vh, 360px);
+  }
+
+  .interface-detail {
+    gap: var(--space-l);
   }
 }
 </style>

@@ -11,7 +11,7 @@ import DotGrid from './DotGrid.vue';
 <template>
   <DotGrid
     as="section"
-    class="home-studio-code px-l"
+    class="home-studio-code"
     :cross-size="5"
     :cross-thickness="1"
     :opacity="0.22"
@@ -75,10 +75,9 @@ import DotGrid from './DotGrid.vue';
 
   position: relative;
   display: grid;
-  /* width: min(calc(100% - (var(--space-l) * 2)), 50rem); */
+  width: 100%;
   min-height: 270px;
-  margin: clamp(96px, 12vw, 176px) 0;
-  justify-content: center;
+  margin: clamp(56px, 7vw, 96px) 0;
   border: 1px solid var(--blueprint-line-strong);
   border-radius: 2px;
   color: var(--blueprint-ink);
@@ -106,7 +105,11 @@ import DotGrid from './DotGrid.vue';
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: var(--space-xl);
-  padding: var(--space-xxl) calc(var(--space-xxl) + var(--space-l));
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 960px;
+  margin-inline: auto;
+  padding: var(--space-xxl) var(--space-l);
   text-shadow: 0 0 12px rgba(220, 236, 255, 0.24);
 }
 
@@ -170,9 +173,8 @@ import DotGrid from './DotGrid.vue';
 
 @media (max-width: 760px) {
   .home-studio-code {
-    width: min(calc(100% - (var(--space-l) * 2)), 30rem);
     min-height: 330px;
-    margin: clamp(80px, 18vw, 128px) auto;
+    margin: clamp(48px, 12vw, 80px) 0;
   }
 
   .home-studio-code::before {
@@ -182,7 +184,6 @@ import DotGrid from './DotGrid.vue';
   .studio-code-blueprint-content {
     grid-template-columns: 1fr;
     gap: var(--space-xl);
-    padding: var(--space-xxl) var(--space-xl);
   }
 
   .studio-code-blueprint-logo,
