@@ -58,6 +58,19 @@ describe('HomeHero', () => {
     assert.doesNotMatch(surfaceSource, /box-shadow:\s*0 -20px 54px/);
   });
 
+  it('uses a calmer stacked hero composition on mobile', () => {
+    assert.match(surfaceSource, /@media \(max-width: 760px\) \{/);
+    assert.match(surfaceSource, /--mobile-art-height:\s*390px;/);
+    assert.match(surfaceSource, /align-items:\s*start;/);
+    assert.match(surfaceSource, /min-height:\s*auto;/);
+    assert.match(surfaceSource, /\.home-hero-surface-art\s*{[^}]*inset:\s*0 0 auto;[^}]*height:\s*calc\(var\(--site-header-height, 0px\) \+ var\(--mobile-art-height\)\);/);
+    assert.match(surfaceSource, /\.home-hero-surface-copy\s*{[^}]*width:\s*100%;[^}]*transform:\s*none;/);
+    assert.match(surfaceSource, /\.home-hero-surface-mark-wrap\s*{[^}]*display:\s*none;/);
+    assert.match(surfaceSource, /\.home-hero-surface-copy h1\s*{[^}]*font-size:\s*var\(--font-size-xxxl\);/);
+    assert.match(surfaceSource, /\.home-hero-use-case-current\s*{[^}]*display:\s*none;/);
+    assert.doesNotMatch(surfaceSource, /translateY\(clamp\(36px, 7vh, 60px\)\)/);
+  });
+
   it('does not bring back the older experimental hero pieces', () => {
     const combinedSource = [source, surfaceSource].join('\n');
 
