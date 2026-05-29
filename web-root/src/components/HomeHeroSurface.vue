@@ -25,6 +25,16 @@ let currentLastTimestamp = 0;
 let currentTime = 0;
 let reducedMotionQuery;
 
+const mobileUseCaseLayout = [
+  { x: 0.3, y: 0.32, scale: 0.98, tilt: -4 },
+  { x: 0.7, y: 0.39, scale: 1.02, tilt: 3 },
+  { x: 0.5, y: 0.54, scale: 1.08, tilt: -2 },
+  { x: 0.25, y: 0.69, scale: 0.96, tilt: 4 },
+  { x: 0.75, y: 0.73, scale: 0.96, tilt: -5 },
+  { x: 0.38, y: 0.88, scale: 0.84, tilt: 2 },
+  { x: 0.66, y: 0.92, scale: 0.84, tilt: -3 },
+];
+
 function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max);
 }
@@ -67,6 +77,7 @@ function getCurrentMetrics() {
   const radiusY = mobile ? height * 0.52 : clamp(height * 0.44, 210, 255);
 
   return {
+    mobile,
     width,
     height,
     centerX: width * 0.5,
@@ -86,6 +97,25 @@ function renderCurrentItems() {
 
   nodes.forEach((node, index) => {
     const useCase = heroUseCases[index];
+
+    if (metrics.mobile) {
+      const layout = mobileUseCaseLayout[index];
+
+      if (!layout) {
+        node.style.transform = 'translate3d(-999vw, -999vh, 0)';
+        return;
+      }
+
+      const drift = Math.sin(currentTime * 0.7 + index * 1.9) * 5;
+      const x = metrics.width * layout.x;
+      const y = metrics.height * layout.y + drift;
+
+      node.style.zIndex = String(3 - index);
+      node.style.setProperty('--use-case-shadow-alpha', '0.18');
+      node.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0) translate(-50%, -50%) scale(${layout.scale}) rotate(${layout.tilt}deg)`;
+      return;
+    }
+
     const progress = (useCase.start + currentTime / useCase.duration) % 1;
     const angle = (150 + progress * 240) * (Math.PI / 180);
     const prominence = Math.sin(progress * Math.PI);
@@ -289,7 +319,8 @@ onBeforeUnmount(() => {
   min-height: 80dvh;
   padding: calc(var(--site-header-height, 0px) + clamp(68px, 8vw, 112px)) var(--space-xl)
     clamp(56px, 7vw, 96px);
-  overflow: hidden;
+  overflow-x: clip;
+  overflow-y: visible;
   text-align: center;
   background: var(--color-chrome-fill);
 }
@@ -609,14 +640,14 @@ onBeforeUnmount(() => {
 
 @media (max-width: 760px) {
   .home-hero-surface {
-    --mobile-art-height: 390px;
-    --surface-shape-height: 190px;
+    --mobile-art-height: 340px;
+    --surface-shape-height: 150px;
     --surface-art-bottom: 0px;
 
     align-items: start;
     min-height: auto;
-    padding: calc(var(--site-header-height, 0px) + var(--mobile-art-height) - 16px) var(--space-l)
-      var(--space-xxxl);
+    padding: calc(var(--site-header-height, 0px) + var(--mobile-art-height) - 34px) var(--space-l)
+      var(--space-xl);
   }
 
   .home-hero-surface-art {
@@ -627,34 +658,65 @@ onBeforeUnmount(() => {
   .home-hero-surface-shape {
     top: calc(var(--site-header-height, 0px) + var(--mobile-art-height) - var(--surface-shape-height));
     bottom: auto;
-    left: -28%;
-    right: -28%;
-    width: 156%;
+    left: -18%;
+    right: -18%;
+    width: 136%;
   }
 
   .home-hero-surface-copy {
-    gap: var(--space-l);
+    gap: var(--space-m);
     width: 100%;
+    padding-top: 68px;
     transform: none;
   }
 
   .home-hero-surface-mark-wrap {
-    display: none;
+    position: absolute;
+    top: -94px;
+    left: 50%;
+    z-index: 5;
+    width: clamp(120px, 34vw, 156px);
+    transform: translateX(-50%);
+  }
+
+  .home-hero-surface-mark {
+    border-width: 8px;
+    border-radius: 34px;
+    filter: drop-shadow(0 24px 42px rgb(0 0 0 / 0.24));
   }
 
   .home-hero-surface-copy h1 {
-    max-width: 470px;
+    max-width: 34rem;
     font-size: var(--font-size-xxxl);
     line-height: var(--line-height-tight);
   }
 
   .home-hero-surface-copy p {
-    max-width: 560px;
+    max-width: 36rem;
     font-size: var(--font-size-l);
   }
 
   .home-hero-use-case-current {
+    top: calc(var(--site-header-height, 0px) + 94px);
+    bottom: auto;
+    z-index: 3;
+    height: calc(var(--mobile-art-height) - 90px);
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  .home-hero-use-case-drift:nth-child(n + 8) {
     display: none;
+  }
+
+  .home-hero-use-case {
+    max-width: min(74vw, 22rem);
+    min-height: 36px;
+    padding: var(--space-m) var(--space-l);
+    box-shadow:
+      0 10px 22px rgb(0 0 0 / var(--use-case-shadow-alpha)),
+      inset 0 1px 0 rgb(255 255 255 / 0.72);
+    font-size: var(--font-size-s);
   }
 
   .home-hero-use-case-modal {
@@ -663,6 +725,19 @@ onBeforeUnmount(() => {
 
   .home-hero-use-case-dialog {
     padding: var(--space-xl) var(--space-l) var(--space-l);
+  }
+}
+
+@media (max-width: 560px) {
+  .home-hero-surface-copy h1 {
+    max-width: 21rem;
+    font-size: 36px;
+  }
+
+  .home-hero-surface-copy p {
+    max-width: 22rem;
+    font-size: var(--font-size-m);
+    line-height: var(--line-height-relaxed);
   }
 }
 

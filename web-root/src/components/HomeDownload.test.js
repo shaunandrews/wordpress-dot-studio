@@ -7,6 +7,6 @@ const source = readFileSync(new URL('./HomeDownload.vue', import.meta.url), 'utf
 describe('HomeDownload', () => {
   it('uses a wide frame for download options', () => {
     assert.match(source, /<section class="home-download px-l">/);
-    assert.match(source, /\.home-download\s*{[^}]*max-width:\s*960px;/);
+    assert.match(source, /\.home-download\s*{[^}]*max-width:\s*var\(--home-content-max-width\);/);
   });
 });

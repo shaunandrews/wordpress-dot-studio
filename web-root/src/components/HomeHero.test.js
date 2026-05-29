@@ -51,6 +51,8 @@ describe('HomeHero', () => {
     assert.match(surfaceSource, /\.home-hero-surface-vfx :deep\(\.hero-vfx-image-effect-source\)/);
     assert.match(surfaceSource, /mix-blend-mode:\s*normal;/);
     assert.match(surfaceSource, /background:\s*var\(--color-chrome-fill\);/);
+    assert.match(surfaceSource, /overflow-x:\s*clip;/);
+    assert.match(surfaceSource, /overflow-y:\s*visible;/);
     assert.match(surfaceSource, /color:\s*var\(--color-chrome-fg\);/);
     assert.match(surfaceSource, /color:\s*var\(--color-chrome-fg-muted\);/);
     assert.doesNotMatch(surfaceSource, /home-hero-copy-panel/);
@@ -58,16 +60,21 @@ describe('HomeHero', () => {
     assert.doesNotMatch(surfaceSource, /box-shadow:\s*0 -20px 54px/);
   });
 
-  it('uses a calmer stacked hero composition on mobile', () => {
+  it('keeps the hero layers responsive on mobile', () => {
     assert.match(surfaceSource, /@media \(max-width: 760px\) \{/);
-    assert.match(surfaceSource, /--mobile-art-height:\s*390px;/);
+    assert.match(surfaceSource, /--mobile-art-height:\s*340px;/);
     assert.match(surfaceSource, /align-items:\s*start;/);
     assert.match(surfaceSource, /min-height:\s*auto;/);
     assert.match(surfaceSource, /\.home-hero-surface-art\s*{[^}]*inset:\s*0 0 auto;[^}]*height:\s*calc\(var\(--site-header-height, 0px\) \+ var\(--mobile-art-height\)\);/);
     assert.match(surfaceSource, /\.home-hero-surface-copy\s*{[^}]*width:\s*100%;[^}]*transform:\s*none;/);
-    assert.match(surfaceSource, /\.home-hero-surface-mark-wrap\s*{[^}]*display:\s*none;/);
+    assert.match(surfaceSource, /\.home-hero-surface-mark-wrap\s*{[^}]*position:\s*absolute;[^}]*top:\s*-94px;[^}]*width:\s*clamp\(120px, 34vw, 156px\);[^}]*transform:\s*translateX\(-50%\);/);
     assert.match(surfaceSource, /\.home-hero-surface-copy h1\s*{[^}]*font-size:\s*var\(--font-size-xxxl\);/);
-    assert.match(surfaceSource, /\.home-hero-use-case-current\s*{[^}]*display:\s*none;/);
+    assert.match(surfaceSource, /\.home-hero-use-case-current\s*{[^}]*top:\s*calc\(var\(--site-header-height, 0px\) \+ 94px\);[^}]*height:\s*calc\(var\(--mobile-art-height\) - 90px\);/);
+    assert.match(surfaceSource, /\.home-hero-use-case-drift:nth-child\(n \+ 8\)\s*{[^}]*display:\s*none;/);
+    assert.match(surfaceSource, /\.home-hero-use-case\s*{[^}]*max-width:\s*min\(74vw, 22rem\);[^}]*font-size:\s*var\(--font-size-s\);/);
+    assert.match(surfaceSource, /@media \(max-width: 560px\)\s*{[\s\S]*?\.home-hero-surface-copy h1\s*{[^}]*max-width:\s*21rem;[^}]*font-size:\s*36px;/);
+    assert.doesNotMatch(surfaceSource, /\.home-hero-surface-mark-wrap\s*{[^}]*display:\s*none;/);
+    assert.doesNotMatch(surfaceSource, /\.home-hero-use-case-current\s*{[^}]*display:\s*none;/);
     assert.doesNotMatch(surfaceSource, /translateY\(clamp\(36px, 7vh, 60px\)\)/);
   });
 

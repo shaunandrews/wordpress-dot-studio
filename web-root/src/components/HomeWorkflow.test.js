@@ -24,12 +24,14 @@ describe('HomeWorkflow', () => {
     assert.match(source, /\.home-workflow-process\s*{[^}]*grid-template-columns:\s*repeat\(4, minmax\(0, 1fr\)\);/);
     assert.match(source, /\.workflow-card\s*{[^}]*text-align:\s*left;/);
     assert.match(source, /\.workflow-card-copy\s*{[^}]*max-width:\s*28rem;/);
+    assert.match(source, /\.workflow-card-illustration\s*{[^}]*justify-content:\s*center;[^}]*align-items:\s*center;/);
     assert.match(source, /\.workflow-card-link\s*{[^}]*margin-top:\s*var\(--space-m\);[^}]*color:\s*var\(--color-theme-fill\);[^}]*font-weight:\s*var\(--font-weight-regular\);[^}]*text-decoration:\s*underline;/);
     assert.match(source, /@media \(max-width: 1120px\)\s*{[\s\S]*?\.home-workflow-process\s*{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\);/);
     assert.match(source, /@media \(max-width: 1120px\)\s*{[\s\S]*?\.workflow-card\s*{[^}]*display:\s*grid;[^}]*grid-template-columns:\s*minmax\(116px, 0\.28fr\) minmax\(0, 1fr\);/);
     assert.match(source, /@media \(max-width: 760px\)\s*{[\s\S]*?\.home-workflow-process\s*{[^}]*grid-template-columns:\s*1fr;/);
     assert.match(source, /@media \(max-width: 760px\)\s*{[\s\S]*?\.home-workflow\s*{[^}]*padding-bottom:\s*var\(--space-xl\);/);
-    assert.doesNotMatch(source, /\.workflow-card-illustration\s*{[^}]*border:/);
-    assert.doesNotMatch(source, /\.workflow-card-illustration\s*{[^}]*border-radius:/);
+    assert.match(source, /\.workflow-card-illustration\s*{[^}]*border:\s*1px solid color-mix\(in srgb, var\(--color-chrome-border\) 58%, transparent\);/);
+    assert.match(source, /\.workflow-card-illustration\s*{[^}]*border-radius:\s*var\(--space-m\);/);
+    assert.match(source, /\.workflow-card-illustration\s*{[^}]*background:\s*color-mix\(in srgb, var\(--color-chrome-fill\) 86%, var\(--color-chrome-border\) 14%\);/);
   });
 });

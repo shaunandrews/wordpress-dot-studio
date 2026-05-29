@@ -108,10 +108,12 @@ const workflowSteps = [
 
 .workflow-card-illustration {
   display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
+  justify-content: center;
+  align-items: center;
   padding: 15px 30px;
-  background: var(--color-chrome-fill);
+  border: 1px solid color-mix(in srgb, var(--color-chrome-border) 58%, transparent);
+  border-radius: var(--space-m);
+  background: color-mix(in srgb, var(--color-chrome-fill) 86%, var(--color-chrome-border) 14%);
   margin-bottom: var(--space-m);
 }
 
@@ -169,7 +171,6 @@ const workflowSteps = [
   .workflow-card-illustration {
     margin-bottom: 0;
     padding: var(--space-s) var(--space-m);
-    justify-content: center;
   }
 
   .workflow-card-illustration :deep(svg) {
@@ -180,6 +181,7 @@ const workflowSteps = [
 @media (max-width: 760px) {
   .home-workflow {
     --home-hero-overhang: clamp(56px, 14vw, 84px);
+    padding-top: var(--space-xl);
     padding-right: var(--space-l);
     padding-bottom: var(--space-xl);
     padding-left: var(--space-l);

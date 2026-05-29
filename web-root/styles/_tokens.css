@@ -40,6 +40,7 @@
   --line-length-s: 32rem;
   --line-length-m: 42rem;
   --line-length-l: 56rem;
+  --home-content-max-width: 960px;
 
   --space-xxs: 1px;
   --space-xs: 2px;

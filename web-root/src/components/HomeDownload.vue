@@ -143,8 +143,10 @@ const downloads = [
   display: flex;
   flex-direction: column;
   gap: var(--space-l);
-  max-width: 960px;
-  margin: auto;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--home-content-max-width);
+  margin-inline: auto;
 }
 
 .download-options {
