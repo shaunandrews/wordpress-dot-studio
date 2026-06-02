@@ -121,48 +121,14 @@ import DotGrid from './DotGrid.vue';
   width: clamp(152px, 18vw, 220px);
   height: auto;
   color: rgba(220, 236, 255, 0.82);
-  filter:
-    drop-shadow(0 0 4px rgba(220, 236, 255, 0.42))
-    drop-shadow(0 0 22px rgba(86, 178, 255, 0.24));
-  animation: studio-code-logo-breathe 5.8s ease-in-out infinite;
 }
 
 .studio-code-blueprint-logo-fill {
   fill: currentColor;
-  stroke: transparent;
-  stroke-width: 0;
-}
-
-.studio-code-blueprint-logo-fill:first-of-type {
-  stroke: #7ff7ff;
-  stroke-width: 1.4;
-  stroke-dasharray: 18 260;
-  stroke-dashoffset: 0;
-  stroke-linejoin: round;
-  filter:
-    drop-shadow(0 0 5px rgba(127, 247, 255, 0.9))
-    drop-shadow(0 0 14px rgba(127, 247, 255, 0.44));
-  animation: studio-code-blueprint-trace 4.8s ease-in-out infinite;
-}
-
-.studio-code-blueprint-logo-fill:nth-of-type(3) {
-  color: rgba(154, 214, 255, 0.72);
-  stroke: #e9ff6a;
-  stroke-width: 1.1;
-  stroke-dasharray: 12 220;
-  stroke-linejoin: round;
-  filter:
-    drop-shadow(0 0 4px rgba(233, 255, 106, 0.72))
-    drop-shadow(0 0 12px rgba(233, 255, 106, 0.34));
-  animation: studio-code-blueprint-trace 5.8s ease-in-out infinite;
-  animation-direction: reverse;
-  animation-delay: 1.2s;
 }
 
 .studio-code-blueprint-logo-cutout {
   fill: var(--blueprint-paper);
-  stroke: transparent;
-  stroke-width: 0;
 }
 
 .studio-code-blueprint-content h2 {
@@ -204,45 +170,6 @@ import DotGrid from './DotGrid.vue';
   background: rgba(220, 236, 255, 0.12);
 }
 
-@keyframes studio-code-logo-breathe {
-  0%,
-  100% {
-    filter:
-      drop-shadow(0 0 4px rgba(220, 236, 255, 0.36))
-      drop-shadow(0 0 18px rgba(86, 178, 255, 0.18));
-  }
-
-  50% {
-    filter:
-      drop-shadow(0 0 7px rgba(220, 236, 255, 0.5))
-      drop-shadow(0 0 30px rgba(86, 178, 255, 0.32));
-  }
-}
-
-@keyframes studio-code-blueprint-trace {
-  0% {
-    stroke-dashoffset: 70;
-    stroke-opacity: 0;
-  }
-
-  14% {
-    stroke-opacity: 0.95;
-  }
-
-  64% {
-    stroke-opacity: 0.95;
-  }
-
-  84% {
-    stroke-opacity: 0;
-  }
-
-  to {
-    stroke-dashoffset: -250;
-    stroke-opacity: 0;
-  }
-}
-
 @media (max-width: 760px) {
   .home-studio-code {
     min-height: 330px;
@@ -265,14 +192,6 @@ import DotGrid from './DotGrid.vue';
 
   .studio-code-blueprint-logo {
     width: clamp(148px, 48vw, 220px);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .studio-code-blueprint-logo,
-  .studio-code-blueprint-logo-fill,
-  .studio-code-blueprint-logo-cutout {
-    animation: none;
   }
 }
 </style>

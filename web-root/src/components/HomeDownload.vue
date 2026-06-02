@@ -69,7 +69,7 @@ const downloads = [
 
 <template>
   <section class="home-download px-l">
-    <h2 class="type-heading type-xxl">Start your Studio today</h2>
+    <h2 class="type-heading type-xxl">Open your Studio today</h2>
     <p class="type-body type-l">
       Download the desktop app, install the CLI, or create an account on the web.
     </p>

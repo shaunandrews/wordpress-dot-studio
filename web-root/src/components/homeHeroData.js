@@ -1,7 +1,6 @@
 import danceStudioPaintingUrl from '../../assets/painting-dance-studio.png?url';
 import draftingPaintingUrl from '../../assets/painting-drafting-table.png?url';
 import fashionPaintingUrl from '../../assets/painting-fashion-house.png?url';
-import fieldPaintingUrl from '../../assets/painting-green-field.png?url';
 import musicStudioPaintingUrl from '../../assets/painting-music-studio.png?url';
 import photoShootPaintingUrl from '../../assets/painting-photo-shoot.png?url';
 import studioApartmentPaintingUrl from '../../assets/painting-studio-apartment.png?url';
@@ -176,16 +175,95 @@ export const heroUseCases = [
     tilt: 5,
     crownLane: -1,
   },
+  {
+    id: 'php-version',
+    label: 'Switch PHP versions',
+    title: 'Switch PHP versions',
+    body: 'Run a local site on a different PHP version to see how a theme or plugin behaves before you change versions on a production host.',
+    start: 0.04,
+    duration: 96,
+    tilt: -4,
+    crownLane: -1,
+  },
+  {
+    id: 'wp-admin',
+    label: 'Jump into WP Admin',
+    title: 'Jump into WP Admin',
+    body: 'Open WP Admin for a local site in one click and start configuring WordPress without signing in every time.',
+    start: 0.22,
+    duration: 96,
+    tilt: 3,
+    crownLane: 1,
+  },
+  {
+    id: 'multi-site',
+    label: 'Run several sites at once',
+    title: 'Run several sites at once',
+    body: 'Keep multiple local WordPress sites running side by side so you can compare setups or move between projects without tearing one down to start another.',
+    start: 0.37,
+    duration: 96,
+    tilt: -3,
+    crownLane: 0,
+  },
+  {
+    id: 'open-folder',
+    label: 'Open the site folder',
+    title: 'Open the site folder',
+    body: "Jump straight to a site's files on disk to edit wp-config, drop in assets, or inspect what WordPress wrote.",
+    start: 0.55,
+    duration: 96,
+    tilt: 5,
+    crownLane: -1,
+  },
+  {
+    id: 'start-stop',
+    label: 'Start and stop sites anytime',
+    title: 'Start and stop sites anytime',
+    body: 'Start a local site only when you need it and stop it when you are done, so background services are not running while you work on something else.',
+    start: 0.71,
+    duration: 96,
+    tilt: -5,
+    crownLane: 1,
+  },
+  {
+    id: 'open-browser',
+    label: 'Open a site in your browser',
+    title: 'Open a site in your browser',
+    body: 'Open a local WordPress site in your default browser straight from Studio to click through the front end the way a visitor would.',
+    start: 0.86,
+    duration: 96,
+    tilt: 2,
+    crownLane: 0,
+  },
 ];
 
 export const paintingOptions = [
-  { id: 'drafting', label: 'Drafting', src: draftingPaintingUrl },
-  { id: 'fashion', label: 'Fashion house', src: fashionPaintingUrl },
-  { id: 'field', label: 'Field', src: fieldPaintingUrl },
-  { id: 'music-studio', label: 'Music studio', src: musicStudioPaintingUrl },
-  { id: 'dance-studio', label: 'Dance studio', src: danceStudioPaintingUrl },
-  { id: 'photo-shoot', label: 'Photo shoot', src: photoShootPaintingUrl },
-  { id: 'studio-apartment', label: 'Studio apartment', src: studioApartmentPaintingUrl },
-  { id: 'tv-studio', label: 'TV studio', src: tvStudioPaintingUrl },
-  { id: 'workbench', label: 'Workbench', src: workbenchPaintingUrl },
+  { id: 'drafting', label: 'Drafting', tooltip: 'A design studio', src: draftingPaintingUrl },
+  { id: 'fashion', label: 'Fashion house', tooltip: 'A fashion studio', src: fashionPaintingUrl },
+  {
+    id: 'music-studio',
+    label: 'Music studio',
+    tooltip: 'A music studio',
+    src: musicStudioPaintingUrl,
+  },
+  {
+    id: 'dance-studio',
+    label: 'Dance studio',
+    tooltip: 'A dance studio',
+    src: danceStudioPaintingUrl,
+  },
+  {
+    id: 'photo-shoot',
+    label: 'Photo shoot',
+    tooltip: 'A photo studio',
+    src: photoShootPaintingUrl,
+  },
+  {
+    id: 'studio-apartment',
+    label: 'Studio apartment',
+    tooltip: "A home studio",
+    src: studioApartmentPaintingUrl,
+  },
+  { id: 'tv-studio', label: 'TV studio', tooltip: 'A TV studio', src: tvStudioPaintingUrl },
+  { id: 'workbench', label: 'Workbench', tooltip: "A maker's studio", src: workbenchPaintingUrl },
 ];

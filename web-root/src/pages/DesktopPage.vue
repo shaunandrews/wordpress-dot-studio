@@ -3,10 +3,40 @@
 @description Renders the first-draft product page for WordPress Studio desktop.
 -->
 <script setup>
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import Button from '../components/Button.vue';
-import StudioDesktopMockup from '../components/StudioDesktopMockup.vue';
+import HeroVfxImage from '../components/HeroVfxImage.vue';
+import HeroSurfaceShape from '../components/HeroSurfaceShape.vue';
+import { paintingOptions } from '../components/homeHeroData.js';
 
 const platforms = ['macOS', 'Windows', 'Linux'];
+
+// Cycle the hero painting like the home hero so the digital effect keeps moving.
+const selectedPaintingId = ref(paintingOptions[0].id);
+const paintingSources = paintingOptions.map((painting) => painting.src);
+let autoSwitchTimer = 0;
+
+const selectedPainting = computed(
+  () =>
+    paintingOptions.find((painting) => painting.id === selectedPaintingId.value) ??
+    paintingOptions[0]
+);
+
+function advancePainting() {
+  const currentIndex = paintingOptions.findIndex(
+    (painting) => painting.id === selectedPaintingId.value
+  );
+  const nextIndex = (currentIndex + 1) % paintingOptions.length;
+  selectedPaintingId.value = paintingOptions[nextIndex].id;
+}
+
+onMounted(() => {
+  autoSwitchTimer = window.setInterval(advancePainting, 12000);
+});
+
+onBeforeUnmount(() => {
+  window.clearInterval(autoSwitchTimer);
+});
 
 const workflow = [
   {
@@ -52,9 +82,19 @@ const upcoming = [
 
 <template>
   <main id="main" class="desktop-page vstack">
-    <section class="desktop-hero hstack align-center gap-xxl px-xxxl">
-      <div class="desktop-hero-copy vstack gap-l">
-        <p class="type-label type-s">Studio Desktop</p>
+    <section class="desktop-hero">
+      <div class="desktop-hero-art" aria-hidden="true">
+        <HeroVfxImage
+          :src="selectedPainting.src"
+          :sources="paintingSources"
+          class="desktop-hero-vfx"
+          render-mode="local-pixel"
+        />
+      </div>
+
+      <HeroSurfaceShape />
+
+      <div class="desktop-hero-copy vstack gap-l align-center">
         <h1 class="type-display type-xxxxl">Run WordPress locally in minutes</h1>
         <p class="type-body type-l">
           Studio Desktop gives you a full WordPress site on your machine without dependency setup,
@@ -68,8 +108,6 @@ const upcoming = [
           <span v-for="platform in platforms" :key="platform">{{ platform }}</span>
         </div>
       </div>
-
-      <StudioDesktopMockup class="desktop-hero-visual" />
     </section>
 
     <section class="desktop-workflow px-xxxl">
@@ -147,14 +185,67 @@ const upcoming = [
 }
 
 .desktop-hero {
-  min-height: 100vh;
-  padding-top: calc(var(--site-header-height, 72px) + var(--space-xxl));
-  padding-bottom: var(--space-xxl);
+  /* Fixed, not vh-scaled: the copy is bottom-anchored and the art/background
+     boundary sits at 0.6x the shape height, mirroring the home hero surface. */
+  --surface-shape-height: 500px;
+  --surface-art-bottom: calc(var(--surface-shape-height) * 0.6);
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
+  display: grid;
+  align-items: end;
+  min-height: max(80dvh, 760px);
+  padding: calc(var(--site-header-height, 72px) + clamp(68px, 8vw, 112px)) var(--space-xl)
+    clamp(56px, 7vw, 96px);
+  overflow-x: clip;
+  overflow-y: visible;
+  text-align: center;
   border-bottom: 1px solid var(--desktop-rule);
 }
 
+.desktop-hero-art {
+  position: absolute;
+  inset: 0 0 var(--surface-art-bottom);
+  z-index: 0;
+  contain: paint;
+  isolation: isolate;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--color-chrome-fill) 55%, canvas 45%);
+  box-shadow: inset 0 -1px 0 color-mix(in srgb, var(--color-chrome-border) 62%, transparent);
+}
+
+.desktop-hero-art :deep(.hero-vfx-image) {
+  inset: 0;
+}
+
+.desktop-hero-vfx :deep(.hero-vfx-image-effect-source) {
+  opacity: calc(var(--vfx-lens-opacity) * 0.96) !important;
+  filter: saturate(1.2) contrast(1.16) brightness(1.02);
+  mix-blend-mode: normal;
+}
+
 .desktop-hero-copy {
-  flex: 0 0 min(42vw, 560px);
+  position: relative;
+  z-index: 3;
+  justify-self: center;
+  width: min(100%, 900px);
+  margin: 0 auto;
+  color: var(--color-chrome-fg);
+  /* Fixed downward nudge keeps the copy sitting in the background band below
+     the painting, matching the home hero. */
+  transform: translateY(92px);
+}
+
+.desktop-hero-copy h1 {
+  max-width: 760px;
+  margin: 0 auto;
+  text-wrap: balance;
+}
+
+.desktop-hero-copy p {
+  max-width: 780px;
+  margin: 0 auto;
+  text-wrap: pretty;
 }
 
 .desktop-hero-copy .type-body,
@@ -184,11 +275,6 @@ const upcoming = [
   color: var(--color-chrome-fg-muted);
   background: var(--desktop-muted-fill);
   font-size: var(--font-size-s);
-}
-
-.desktop-hero-visual {
-  flex: 1 1 auto;
-  min-height: 520px;
 }
 
 .desktop-workflow,
@@ -271,29 +357,16 @@ const upcoming = [
 }
 
 @media (max-width: 1120px) {
-  .desktop-hero,
   .desktop-detail,
   .publishing-band {
     flex-direction: column;
     align-items: stretch;
   }
 
-  .desktop-hero {
-    padding-inline: var(--space-xl);
-  }
-
-  .desktop-hero-copy,
   .detail-copy {
     flex-basis: auto;
     max-width: var(--line-length-m);
-  }
-
-  .detail-copy {
     position: static;
-  }
-
-  .desktop-hero-visual {
-    min-height: 460px;
   }
 
   .desktop-workflow,
@@ -317,22 +390,48 @@ const upcoming = [
     padding-inline: var(--space-l);
   }
 
+  .desktop-hero {
+    --surface-shape-height: 360px;
+    min-height: max(78dvh, 600px);
+  }
+
+  .desktop-hero-copy {
+    transform: translateY(56px);
+  }
+
+  .desktop-hero-copy h1 {
+    font-size: var(--font-size-xxxl);
+    line-height: var(--line-height-tight);
+  }
+
+  .desktop-hero-copy p {
+    font-size: var(--font-size-l);
+  }
+
   .desktop-actions {
     flex-direction: column;
     align-items: stretch;
+    width: 100%;
   }
 
   .desktop-actions :deep(.button) {
     width: 100%;
   }
 
-  .desktop-hero-visual {
-    min-height: 360px;
-  }
-
   .feature-row,
   .upcoming-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .desktop-hero-copy h1 {
+    font-size: 36px;
+  }
+
+  .desktop-hero-copy p {
+    font-size: var(--font-size-m);
+    line-height: var(--line-height-relaxed);
   }
 }
 </style>

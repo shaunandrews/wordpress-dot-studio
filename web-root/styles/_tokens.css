@@ -4,7 +4,7 @@
   --color-chrome-fg-muted: #444;
   --color-chrome-border: #ddd;
   --color-chrome-fill-transparent: rgb(255 255 255 / 0.8);
-  --color-nav-shadow: rgb(0 0 0 / 0.15);
+  --color-nav-shadow: rgb(0 0 0 / 0.05);
   --color-nav-indicator-fill: var(--color-chrome-fg);
   --color-nav-indicator-fg: var(--color-chrome-fill);
   --color-theme-fill: #1038be;

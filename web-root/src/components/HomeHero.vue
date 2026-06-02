@@ -27,7 +27,7 @@ function advancePainting() {
 }
 
 onMounted(() => {
-  autoSwitchTimer = window.setInterval(advancePainting, 5200);
+  autoSwitchTimer = window.setInterval(advancePainting, 12000);
 });
 
 onBeforeUnmount(() => {

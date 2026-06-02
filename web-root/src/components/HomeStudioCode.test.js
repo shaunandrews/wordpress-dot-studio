@@ -14,10 +14,16 @@ describe('HomeStudioCode', () => {
     assert.match(source, /\.studio-code-blueprint-content\s*{[^}]*box-sizing:\s*border-box;[^}]*width:\s*100%;[^}]*max-width:\s*var\(--home-content-max-width\);[^}]*margin-inline:\s*auto;[^}]*padding:\s*var\(--space-xxl\) var\(--space-l\);/);
     assert.doesNotMatch(source, /studio-code-blueprint-logo-shell/);
     assert.match(source, /\.studio-code-blueprint-logo\s*{[^}]*width:\s*clamp\(152px, 18vw, 220px\);/);
-    assert.match(source, /\.studio-code-blueprint-logo\s*{[^}]*animation:\s*studio-code-logo-breathe 5\.8s ease-in-out infinite;/);
-    assert.match(source, /\.studio-code-blueprint-logo-fill:first-of-type\s*{[^}]*stroke:\s*#7ff7ff;[^}]*stroke-dasharray:\s*18 260;[^}]*animation:\s*studio-code-blueprint-trace 4\.8s ease-in-out infinite;/);
-    assert.match(source, /\.studio-code-blueprint-logo-fill:nth-of-type\(3\)\s*{[^}]*stroke:\s*#e9ff6a;[^}]*stroke-dasharray:\s*12 220;[^}]*animation:\s*studio-code-blueprint-trace 5\.8s ease-in-out infinite;/);
-    assert.match(source, /\.studio-code-blueprint-logo-cutout\s*{[^}]*stroke:\s*transparent;/);
+    // The logo renders as the plain pixel mark: no glow filter, no animation, no
+    // cyan/yellow trace strokes.
+    assert.doesNotMatch(source, /studio-code-logo-breathe/);
+    assert.doesNotMatch(source, /studio-code-blueprint-trace/);
+    assert.doesNotMatch(source, /#7ff7ff/);
+    assert.doesNotMatch(source, /#e9ff6a/);
+    assert.doesNotMatch(source, /\.studio-code-blueprint-logo\s*{[^}]*filter:/);
+    assert.doesNotMatch(source, /\.studio-code-blueprint-logo\s*{[^}]*animation:/);
+    assert.match(source, /\.studio-code-blueprint-logo-fill\s*{[^}]*fill:\s*currentColor;/);
+    assert.match(source, /\.studio-code-blueprint-logo-cutout\s*{[^}]*fill:\s*var\(--blueprint-paper\);/);
     assert.doesNotMatch(source, /studio-code-vector-glitch/);
     assert.doesNotMatch(source, /studio-code-cutout-flicker/);
     assert.doesNotMatch(source, /width:\s*min\(calc\(100% - \(var\(--space-l\) \* 2\)\), 30rem\);/);

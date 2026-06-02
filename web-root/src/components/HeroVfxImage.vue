@@ -7,7 +7,7 @@ import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { VFX } from '@vfx-js/core';
 import { PixelateEffect } from '@vfx-js/effects';
 
-const TRANSITION_DURATION = 720;
+const TRANSITION_DURATION = 1400;
 const TRANSITION_SETTLE_DELAY = 90;
 const INITIAL_PIXEL_SIZE = 5;
 const PIXEL_SIZE_AMPLITUDE = 0.1;
@@ -15,7 +15,7 @@ const PIXEL_SIZE_CYCLE_MS = 10200;
 const MAX_EFFECT_PIXEL_WIDTH = 1400;
 const EFFECT_RENDER_SCALE = 0.55;
 const LOCAL_PIXEL_RENDER_SCALE = 0.09;
-const KEN_BURNS_CYCLE_MS = 16800;
+const KEN_BURNS_CYCLE_MS = 23000;
 const VFX_SETTINGS = {
   pixelSize: INITIAL_PIXEL_SIZE,
   pixelAmplitude: PIXEL_SIZE_AMPLITUDE,
@@ -36,8 +36,8 @@ const VFX_SETTINGS = {
   flowY: 10.6,
   flowXMs: 2300,
   flowYMs: 3400,
-  localMaskSpeed: 1.72,
-  localMaskRadiusScale: 0.72,
+  localMaskSpeed: 2.05,
+  localMaskRadiusScale: 0.62,
   localMaskFlowScale: 1.42,
 };
 
@@ -699,7 +699,7 @@ onBeforeUnmount(() => {
   z-index: 1;
   opacity: 0;
   clip-path: inset(0 100% 0 0);
-  animation: hero-image-cross-fade-wipe 720ms cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  animation: hero-image-cross-fade-wipe 1400ms cubic-bezier(0.65, 0, 0.35, 1) forwards;
   will-change: clip-path, opacity, transform;
 }
 

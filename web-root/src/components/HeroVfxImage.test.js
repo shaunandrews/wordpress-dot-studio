@@ -212,7 +212,7 @@ describe('HeroVfxImage', () => {
     assert.match(source, /opacity:\s*0;\s*clip-path:\s*inset\(0 100% 0 0\);/);
     assert.match(
       source,
-      /hero-image-cross-fade-wipe 720ms cubic-bezier\(0\.65, 0, 0\.35, 1\) forwards/
+      /hero-image-cross-fade-wipe 1400ms cubic-bezier\(0\.65, 0, 0\.35, 1\) forwards/
     );
     assert.match(source, /@keyframes hero-image-cross-fade-wipe/);
     assert.match(source, /42%\s*{\s*opacity:\s*0\.72;/);
@@ -333,7 +333,7 @@ describe('HomeHero', () => {
     assert.doesNotMatch(dataSource, /id:\s*'abstract'/);
     assert.match(dataSource, /painting-drafting-table\.png\?url/);
     assert.match(dataSource, /painting-fashion-house\.png\?url/);
-    assert.match(dataSource, /painting-green-field\.png\?url/);
+    assert.doesNotMatch(dataSource, /painting-green-field\.png\?url/);
     assert.match(dataSource, /painting-music-studio\.png\?url/);
     assert.match(dataSource, /painting-dance-studio\.png\?url/);
     assert.match(dataSource, /painting-photo-shoot\.png\?url/);

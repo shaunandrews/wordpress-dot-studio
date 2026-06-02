@@ -24,7 +24,7 @@ describe('HomeHero', () => {
     assert.doesNotMatch(dataSource, /id:\s*'abstract'/);
     assert.match(dataSource, /painting-drafting-table\.png\?url/);
     assert.match(dataSource, /painting-fashion-house\.png\?url/);
-    assert.match(dataSource, /painting-green-field\.png\?url/);
+    assert.doesNotMatch(dataSource, /painting-green-field\.png\?url/);
     assert.match(dataSource, /painting-music-studio\.png\?url/);
     assert.match(dataSource, /painting-dance-studio\.png\?url/);
     assert.match(dataSource, /painting-photo-shoot\.png\?url/);
@@ -33,7 +33,7 @@ describe('HomeHero', () => {
     assert.match(dataSource, /painting-workbench\.png\?url/);
     assert.match(source, /const selectedPainting = computed/);
     assert.match(source, /function advancePainting\(\)/);
-    assert.match(source, /autoSwitchTimer = window\.setInterval\(advancePainting, 5200\)/);
+    assert.match(source, /autoSwitchTimer = window\.setInterval\(advancePainting, 12000\)/);
     assert.match(source, /window\.clearInterval\(autoSwitchTimer\)/);
     assert.doesNotMatch(source, /class="home-hero-painting-switcher"/);
     assert.doesNotMatch(source, /:aria-pressed="selectedPaintingId === painting\.id"/);

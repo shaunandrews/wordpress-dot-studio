@@ -246,12 +246,13 @@ onBeforeUnmount(() => {
   --nav-brand-mark-size: 32px;
   align-items: center;
   background: var(--color-chrome-fill-transparent);
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(8px);
   box-shadow:
-    0 2px 0.5px var(--color-chrome-fill-transparent) inset,
-    0 1px 3px var(--color-nav-shadow);
-  padding: 4px;
-  border-radius: 10px;
+    0 1px 0.5px var(--color-chrome-fill-transparent) inset,
+    0 2px 3px var(--color-nav-shadow);
+  border: 1px solid color-mix(in srgb, var(--color-chrome-border) 80%, transparent);
+  padding: 2px;
+  border-radius: 8px;
   position: relative;
 }
 
