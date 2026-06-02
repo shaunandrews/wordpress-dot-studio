@@ -107,6 +107,19 @@ function selectIndex(index) {
   selectCell(cell.col, cell.row);
 }
 
+// Real art when a use case provides a `graphic` URL; otherwise the FPO gradient.
+// Lets real graphics drop in later via data alone, with no template change.
+function cardGraphicStyle(useCase, index) {
+  if (useCase.graphic) {
+    return {
+      backgroundImage: `url(${useCase.graphic})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+    };
+  }
+  return fpoGraphicStyle(index, count);
+}
+
 function rebuildCellsIfNeeded() {
   const b = visibleCells({ x: camX, y: camY }, viewport(), cellW.value, cellH.value, 1);
   if (
@@ -370,7 +383,7 @@ onBeforeUnmount(() => {
             :data-row="cell.row"
             @click="onCardClick(cell)"
           >
-            <span class="use-case-grid-card-graphic" :style="fpoGraphicStyle(cell.index, count)"></span>
+            <span class="use-case-grid-card-graphic" :style="cardGraphicStyle(cell.useCase, cell.index)"></span>
             <span class="use-case-grid-card-title type-heading">{{ cell.useCase.title }}</span>
             <span class="use-case-grid-card-body type-body">{{ cell.useCase.body }}</span>
           </button>
@@ -479,6 +492,7 @@ onBeforeUnmount(() => {
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 4;
+  line-clamp: 4;
   -webkit-box-orient: vertical;
 }
 

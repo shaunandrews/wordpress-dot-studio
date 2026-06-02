@@ -12,6 +12,8 @@ describe('UseCaseGridOverlay', () => {
     assert.match(source, /nearestCell/);
     assert.match(source, /stepCell/);
     assert.match(source, /defineEmits\(\['close'\]\)/);
+    assert.match(source, /cardGraphicStyle/);
+    assert.match(source, /useCase\.graphic/);
   });
 
   it('drives motion on requestAnimationFrame with a spring camera', () => {
