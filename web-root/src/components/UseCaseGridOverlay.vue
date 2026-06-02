@@ -199,6 +199,9 @@ function onKeydown(event) {
   }
 }
 
+// The off-screen a11y list buttons are visually clipped but intentionally remain
+// in the tab order — they (plus the close button) are the only focusable elements,
+// so this trap cycles through them. Do not add tabindex="-1" to those buttons.
 function trapFocus(event) {
   const focusable = rootEl.value?.querySelectorAll(
     'button:not([tabindex="-1"]), [href], [tabindex]:not([tabindex="-1"])'
@@ -216,6 +219,8 @@ function trapFocus(event) {
 }
 
 function onCardClick(cell) {
+  // `didDrag` is reset on each pointerdown; a real drag sets it true so the
+  // drag's snap (in onPointerUp) wins and the trailing click is swallowed here.
   if (didDrag) return;
   selectCell(cell.col, cell.row);
 }
@@ -444,6 +449,12 @@ onBeforeUnmount(() => {
   text-align: left;
   overflow: hidden;
   transform-origin: center;
+  /* Resting defaults for cards that have just entered the lattice: applyTransforms
+     overwrites scale/opacity next frame, but DOM patches land one frame after the
+     reactive `cells` update, so default to small + invisible to avoid a one-frame
+     full-size pop at the scrolling edge. */
+  transform: scale(0.7);
+  opacity: 0;
   will-change: transform, opacity;
 }
 
