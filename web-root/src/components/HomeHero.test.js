@@ -78,6 +78,15 @@ describe('HomeHero', () => {
     assert.doesNotMatch(surfaceSource, /translateY\(clamp\(36px, 7vh, 60px\)\)/);
   });
 
+  it('opens the grid overlay instead of the single-card modal', () => {
+    assert.match(surfaceSource, /import UseCaseGridOverlay from '\.\/UseCaseGridOverlay\.vue';/);
+    assert.match(surfaceSource, /<UseCaseGridOverlay/);
+    assert.match(surfaceSource, /:use-cases="heroUseCases"/);
+    assert.match(surfaceSource, /@close="closeUseCase"/);
+    assert.doesNotMatch(surfaceSource, /home-hero-use-case-modal/);
+    assert.doesNotMatch(surfaceSource, /home-hero-use-case-dialog/);
+  });
+
   it('does not bring back the older experimental hero pieces', () => {
     const combinedSource = [source, surfaceSource].join('\n');
 

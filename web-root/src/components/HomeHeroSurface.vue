@@ -2,6 +2,7 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import HomeHeroActions from './HomeHeroActions.vue';
 import HeroVfxImage from './HeroVfxImage.vue';
+import UseCaseGridOverlay from './UseCaseGridOverlay.vue';
 import InlineSvg from './InlineSvg.vue';
 import { heroCopy, heroUseCases } from './homeHeroData.js';
 import studioIconUrl from '../../assets/studio-icon.svg?url';
@@ -88,12 +89,6 @@ function openUseCase(useCaseId) {
 function closeUseCase() {
   selectedUseCaseId.value = '';
   currentPaused.value = false;
-}
-
-function handleKeydown(event) {
-  if (event.key === 'Escape') {
-    closeUseCase();
-  }
 }
 
 function applyTooltipTransform() {
@@ -391,7 +386,6 @@ function tickCurrent(timestamp) {
 
 onMounted(() => {
   reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-  window.addEventListener('keydown', handleKeydown);
   window.addEventListener('resize', renderCurrentItems);
 
   nextTick(() => {
@@ -404,7 +398,6 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-  window.removeEventListener('keydown', handleKeydown);
   window.removeEventListener('resize', renderCurrentItems);
   window.cancelAnimationFrame(currentAnimationFrame);
   stopTooltipLoop();
@@ -524,37 +517,12 @@ onBeforeUnmount(() => {
       </div>
     </Teleport>
 
-    <Teleport to="body">
-      <div
-        v-if="selectedUseCase"
-        class="home-hero-use-case-modal"
-        role="presentation"
-        @click.self="closeUseCase"
-      >
-        <section
-          class="home-hero-use-case-dialog vstack gap-l"
-          role="dialog"
-          aria-modal="true"
-          :aria-labelledby="`${selectedUseCase.id}-title`"
-        >
-          <button
-            class="home-hero-use-case-close"
-            type="button"
-            aria-label="Close use case details"
-            @click="closeUseCase"
-          >
-            <span aria-hidden="true">x</span>
-          </button>
-          <div class="home-hero-use-case-dialog-copy vstack gap-m">
-            <p class="home-hero-use-case-kicker type-body type-s">Studio can help you...</p>
-            <h2 :id="`${selectedUseCase.id}-title`" class="type-heading type-xxl">
-              {{ selectedUseCase.title }}
-            </h2>
-            <p class="type-body type-m">{{ selectedUseCase.body }}</p>
-          </div>
-        </section>
-      </div>
-    </Teleport>
+    <UseCaseGridOverlay
+      v-if="selectedUseCase"
+      :use-cases="heroUseCases"
+      :initial-id="selectedUseCaseId"
+      @close="closeUseCase"
+    />
   </section>
 </template>
 
@@ -885,71 +853,6 @@ onBeforeUnmount(() => {
   }
 }
 
-.home-hero-use-case-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  display: grid;
-  place-items: center;
-  padding: var(--space-xl);
-  background: rgb(0 0 0 / 0.4);
-  backdrop-filter: blur(8px);
-}
-
-.home-hero-use-case-dialog {
-  position: relative;
-  width: min(100%, 520px);
-  padding: var(--space-xl);
-  border: 1px solid color-mix(in srgb, var(--color-chrome-border) 78%, transparent);
-  border-radius: 8px;
-  color: var(--color-chrome-fg);
-  background: var(--color-chrome-fill);
-  box-shadow: 0 24px 72px rgb(0 0 0 / 0.28);
-}
-
-.home-hero-use-case-dialog h2,
-.home-hero-use-case-dialog p {
-  margin: 0;
-}
-
-.home-hero-use-case-dialog .type-body {
-  color: var(--color-chrome-fg-muted);
-}
-
-.home-hero-use-case-kicker {
-  color: var(--color-theme-fill);
-  font-weight: var(--font-weight-medium);
-  text-transform: uppercase;
-}
-
-.home-hero-use-case-close {
-  position: absolute;
-  top: var(--space-l);
-  right: var(--space-l);
-  display: grid;
-  place-items: center;
-  width: 32px;
-  aspect-ratio: 1;
-  border: 1px solid color-mix(in srgb, var(--color-chrome-border) 80%, transparent);
-  border-radius: 50%;
-  color: var(--color-chrome-fg-muted);
-  background: color-mix(in srgb, var(--color-chrome-fill) 86%, canvas 14%);
-  cursor: pointer;
-  font: inherit;
-  line-height: 1;
-}
-
-.home-hero-use-case-close:hover,
-.home-hero-use-case-close:focus-visible {
-  color: var(--color-chrome-fg);
-  border-color: var(--color-theme-fill);
-}
-
-.home-hero-use-case-close:focus-visible {
-  outline: 2px solid var(--color-theme-fill);
-  outline-offset: 3px;
-}
-
 @media (max-width: 760px) {
   .home-hero-surface {
     --mobile-art-height: 340px;
@@ -1029,14 +932,6 @@ onBeforeUnmount(() => {
     padding: var(--space-m) var(--space-l);
     box-shadow: 0 8px 18px rgb(0 0 0 / 0.16);
     font-size: var(--font-size-s);
-  }
-
-  .home-hero-use-case-modal {
-    padding: var(--space-l);
-  }
-
-  .home-hero-use-case-dialog {
-    padding: var(--space-xl) var(--space-l) var(--space-l);
   }
 }
 
