@@ -3,40 +3,13 @@
 @description Renders the first-draft product page for WordPress Studio desktop.
 -->
 <script setup>
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import Button from '../components/Button.vue';
 import HeroVfxImage from '../components/HeroVfxImage.vue';
 import HeroSurfaceShape from '../components/HeroSurfaceShape.vue';
-import { paintingOptions } from '../components/homeHeroData.js';
+import desktopPaintingUrl from '../../assets/painting-studio-mac.png?url';
+import desktopScreenshotUrl from '../../assets/screenshot-studio-2-0.png?url';
 
 const platforms = ['macOS', 'Windows', 'Linux'];
-
-// Cycle the hero painting like the home hero so the digital effect keeps moving.
-const selectedPaintingId = ref(paintingOptions[0].id);
-const paintingSources = paintingOptions.map((painting) => painting.src);
-let autoSwitchTimer = 0;
-
-const selectedPainting = computed(
-  () =>
-    paintingOptions.find((painting) => painting.id === selectedPaintingId.value) ??
-    paintingOptions[0]
-);
-
-function advancePainting() {
-  const currentIndex = paintingOptions.findIndex(
-    (painting) => painting.id === selectedPaintingId.value
-  );
-  const nextIndex = (currentIndex + 1) % paintingOptions.length;
-  selectedPaintingId.value = paintingOptions[nextIndex].id;
-}
-
-onMounted(() => {
-  autoSwitchTimer = window.setInterval(advancePainting, 12000);
-});
-
-onBeforeUnmount(() => {
-  window.clearInterval(autoSwitchTimer);
-});
 
 const workflow = [
   {
@@ -85,8 +58,7 @@ const upcoming = [
     <section class="desktop-hero">
       <div class="desktop-hero-art" aria-hidden="true">
         <HeroVfxImage
-          :src="selectedPainting.src"
-          :sources="paintingSources"
+          :src="desktopPaintingUrl"
           class="desktop-hero-vfx"
           render-mode="local-pixel"
         />
@@ -95,6 +67,14 @@ const upcoming = [
       <HeroSurfaceShape />
 
       <div class="desktop-hero-copy vstack gap-l align-center">
+        <figure class="desktop-hero-shot">
+          <img
+            :src="desktopScreenshotUrl"
+            alt="WordPress Studio for desktop"
+            width="2432"
+            height="1388"
+          />
+        </figure>
         <h1 class="type-display type-xxxxl">Run WordPress locally in minutes</h1>
         <p class="type-body type-l">
           Studio Desktop gives you a full WordPress site on your machine without dependency setup,
@@ -194,7 +174,7 @@ const upcoming = [
   isolation: isolate;
   display: grid;
   align-items: end;
-  min-height: max(80dvh, 760px);
+  min-height: max(86dvh, 880px);
   padding: calc(var(--site-header-height, 72px) + clamp(68px, 8vw, 112px)) var(--space-xl)
     clamp(56px, 7vw, 96px);
   overflow-x: clip;
@@ -231,9 +211,27 @@ const upcoming = [
   width: min(100%, 900px);
   margin: 0 auto;
   color: var(--color-chrome-fg);
-  /* Fixed downward nudge keeps the copy sitting in the background band below
-     the painting, matching the home hero. */
-  transform: translateY(92px);
+  /* Gentle downward nudge keeps the headline and actions in the background band
+     while the screenshot floats up over the painting. */
+  transform: translateY(28px);
+}
+
+/* Framed app screenshot, sitting in the icon's spot above the headline and
+   floating over the painting. */
+.desktop-hero-shot {
+  width: min(100%, 760px);
+  margin: 0 auto var(--space-m);
+}
+
+.desktop-hero-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--color-chrome-border) 70%, transparent);
+  box-shadow:
+    0 36px 72px -22px rgb(0 0 0 / 0.5),
+    0 10px 28px rgb(0 0 0 / 0.2);
 }
 
 .desktop-hero-copy h1 {
@@ -396,7 +394,7 @@ const upcoming = [
   }
 
   .desktop-hero-copy {
-    transform: translateY(56px);
+    transform: translateY(16px);
   }
 
   .desktop-hero-copy h1 {

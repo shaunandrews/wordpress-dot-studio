@@ -27,8 +27,9 @@ const emit = defineEmits(['close']);
 
 const COLS = 6;
 const CENTER_SCALE = 1.6;
-const MIN_SCALE = 0.7;
-const FALLOFF = 2.2; // cells from center where scale reaches MIN
+const MIN_SCALE = 0.6;
+const FALLOFF = 1.8; // cells from center where scale reaches MIN
+const FALLOFF_POWER = 1.6; // >1 sharpens the dropoff so neighbors read clearly smaller
 const SPRING_STIFFNESS = 210;
 const SPRING_DAMPING = 22;
 const SCROLL_IDLE_MS = 140;
@@ -40,8 +41,8 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const rootEl = ref(null);
 const layerEl = ref(null);
 const cells = ref([]);
-const cellW = ref(340);
-const cellH = ref(380);
+const cellW = ref(580);
+const cellH = ref(350);
 const liveLabel = ref('');
 const visible = ref(false);
 
@@ -71,11 +72,14 @@ function viewport() {
   return { width: window.innerWidth, height: window.innerHeight };
 }
 
+// Cell pitch = card spacing. Must stay larger than the centered card's scaled
+// footprint (card size x CENTER_SCALE) so the big center card never collides
+// with its neighbours. Card visual size lives in CSS (--uc-card-w/h).
 function responsiveMetrics() {
   const w = window.innerWidth;
-  if (w <= 560) return { cellW: 210, cellH: 240 };
-  if (w <= 760) return { cellW: 250, cellH: 280 };
-  return { cellW: 340, cellH: 380 };
+  if (w <= 560) return { cellW: 380, cellH: 320 };
+  if (w <= 760) return { cellW: 480, cellH: 340 };
+  return { cellW: 580, cellH: 350 };
 }
 
 function canonicalCellForIndex(index) {
@@ -156,12 +160,13 @@ function applyTransforms() {
   nodes.forEach((node) => {
     const col = Number(node.dataset.col);
     const row = Number(node.dataset.row);
+    // Every card is identical; only its size differs. The card nearest the
+    // camera centre is the biggest (and naturally lands on top).
     const d = Math.hypot(col + 0.5 - camCol, row + 0.5 - camRow);
-    const t = Math.max(0, 1 - d / FALLOFF);
-    const smooth = t * t * (3 - 2 * t);
-    const scale = MIN_SCALE + (CENTER_SCALE - MIN_SCALE) * smooth;
-    const opacity = 0.5 + 0.5 * Math.max(0, 1 - d / (FALLOFF + 1.4));
-    node.style.transform = `scale(${scale.toFixed(3)})`;
+    const eased = Math.pow(Math.max(0, 1 - d / FALLOFF), FALLOFF_POWER);
+    const scale = MIN_SCALE + (CENTER_SCALE - MIN_SCALE) * eased;
+    const opacity = 0.55 + 0.45 * Math.max(0, 1 - d / (FALLOFF + 1.6));
+    node.style.transform = `translate(-50%, -50%) scale(${scale.toFixed(3)})`;
     node.style.opacity = opacity.toFixed(3);
     node.style.zIndex = String(Math.round(100 - d * 10));
   });
@@ -276,6 +281,19 @@ function onPointerUp() {
 }
 
 function onWheel(event) {
+  // When the wheel is over the centered card and its copy overflows, let it
+  // scroll natively instead of panning the grid.
+  const cardEl = event.target?.closest?.('.use-case-grid-card');
+  if (
+    cardEl &&
+    Number(cardEl.dataset.col) === selCol &&
+    Number(cardEl.dataset.row) === selRow
+  ) {
+    const text = cardEl.querySelector('.use-case-grid-card-text');
+    if (text && text.scrollHeight > text.clientHeight) {
+      return;
+    }
+  }
   event.preventDefault();
   camX += event.deltaX;
   camY += event.deltaY;
@@ -383,9 +401,11 @@ onBeforeUnmount(() => {
             :data-row="cell.row"
             @click="onCardClick(cell)"
           >
+            <span class="use-case-grid-card-text">
+              <span class="use-case-grid-card-title">{{ cell.useCase.title }}</span>
+              <span class="use-case-grid-card-body">{{ cell.useCase.body }}</span>
+            </span>
             <span class="use-case-grid-card-graphic" :style="cardGraphicStyle(cell.useCase, cell.index)"></span>
-            <span class="use-case-grid-card-title type-heading">{{ cell.useCase.title }}</span>
-            <span class="use-case-grid-card-body type-body">{{ cell.useCase.body }}</span>
           </button>
         </div>
       </div>
@@ -412,6 +432,10 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .use-case-grid {
+  /* Base card footprint, centered in each (larger) lattice cell. Kept well
+     below the cell pitch so the scaled-up center card grows into empty space. */
+  --uc-card-w: 320px;
+  --uc-card-h: 188px;
   position: fixed;
   inset: 0;
   z-index: 100;
@@ -420,6 +444,20 @@ onBeforeUnmount(() => {
   touch-action: none;
   user-select: none;
   transition: opacity 0.22s ease;
+}
+
+@media (max-width: 760px) {
+  .use-case-grid {
+    --uc-card-w: 272px;
+    --uc-card-h: 176px;
+  }
+}
+
+@media (max-width: 560px) {
+  .use-case-grid {
+    --uc-card-w: 224px;
+    --uc-card-h: 168px;
+  }
 }
 
 .use-case-grid.is-visible {
@@ -446,54 +484,65 @@ onBeforeUnmount(() => {
   left: 0;
 }
 
+/* Fixed-size card centered on its cell via margins (not transform), leaving the
+   per-frame transform free for scale only. Graphic and text sit side by side. */
 .use-case-grid-card {
   position: absolute;
-  inset: 14px;
+  top: 50%;
+  left: 50%;
+  width: var(--uc-card-w);
+  height: var(--uc-card-h);
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: stretch;
   gap: var(--space-m);
   padding: var(--space-l);
-  border: 1px solid color-mix(in srgb, var(--color-chrome-border) 78%, transparent);
-  border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--color-chrome-border) 72%, transparent);
+  border-radius: 8px;
   color: var(--color-chrome-fg);
   background: var(--color-chrome-fill);
-  box-shadow: 0 12px 30px rgb(0 0 0 / 0.24);
+  box-shadow: 0 14px 34px rgb(0 0 0 / 0.26);
   cursor: pointer;
   text-align: left;
   overflow: hidden;
   transform-origin: center;
-  /* Resting defaults for cards that have just entered the lattice: applyTransforms
-     overwrites scale/opacity next frame, but DOM patches land one frame after the
-     reactive `cells` update, so default to small + invisible to avoid a one-frame
-     full-size pop at the scrolling edge. */
-  transform: scale(0.7);
+  /* Centered on the cell via translate (frees height to vary per card); the
+     per-frame transform composes this same translate with the live scale.
+     Resting defaults are small + invisible so a just-entered card never shows a
+     one-frame full-size pop before applyTransforms styles it next frame. */
+  transform: translate(-50%, -50%) scale(0.62);
   opacity: 0;
   will-change: transform, opacity;
 }
 
+.use-case-grid-card-text {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 5px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
 .use-case-grid-card-graphic {
-  display: block;
-  width: 100%;
-  aspect-ratio: 16 / 9;
+  flex: 0 0 38%;
+  align-self: stretch;
   border-radius: 6px;
-  flex-shrink: 0;
+  background: var(--color-chrome-border);
 }
 
 .use-case-grid-card-title {
-  font-size: var(--font-size-l);
+  font-size: 15px;
   font-weight: var(--font-weight-medium);
-  line-height: var(--line-height-snug);
+  line-height: 1.2;
 }
 
 .use-case-grid-card-body {
   color: var(--color-chrome-fg-muted);
-  font-size: var(--font-size-s);
-  line-height: var(--line-height-relaxed);
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  line-clamp: 4;
-  -webkit-box-orient: vertical;
+  font-size: 12px;
+  line-height: 1.4;
 }
 
 .use-case-grid-close {
